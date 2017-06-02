@@ -1,0 +1,23 @@
+click a button and see all first letter chiasmus in different color
+or
+hover over lyrics and see first letters fade into different color and get bigger font before fading back to normal (trigger some css transition or something)
+or
+on hover then words rearrange themselves into a the chiastic pattern so it's easy to see.
+
+
+colors http://materializecss.com/color.html
+
+#e8f5e9 green lighten-5
+#c8e6c9 green lighten-4
+#a5d6a7 green lighten-3
+#81c784 green lighten-2
+#66bb6a green lighten-1
+#4caf50 green
+#43a047 green darken-1
+#388e3c green darken-2
+#2e7d32 green darken-3
+#1b5e20 green darken-4
+#b9f6ca green accent-1
+#69f0ae green accent-2
+#00e676 green accent-3
+#00c853 green accent-4
