@@ -21,3 +21,11 @@ body {
   color: yellow;
   font-size: 400%;
 }
+
+#ch:first-letter {
+  color: red;
+  font-size: 1.7em;
+  text-transform: capitalize;
+  overflow: hidden;
+  line-height: 1%;
+}
