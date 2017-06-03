@@ -8,28 +8,34 @@
 <body>
   <div class="lyric">
   <h2>Fast Sundae</h2>
-  <p>
+  <p id='joe'>
     <span class="fl">I</span>nside <span class="fl">s</span>tarvation are individual attitudes, Hip...<br>
     Hippocritical attitudes. Individuals are starving inside.
   </p>
   </div>
   
-<ul id="test">
-  <li>item 1</li>
-  <li>item 2</li>
-  <li>item 3</li>
-</ul>
 
-<script>
+<script src='fastsundae.js'></script>
+<!--<script>
   var firstLetter = document.getElementsByClassName("fl"); //fl=firstLetter in words to highlight
   var originalStyle = document.getElementsByClassName("fl2"); // to select elements to return to "fl" style.
-  firstLetter[0].addEventListener("mouseover", function(event) {
+  function bob (){
+  for (i=0; i<firstLetter.length; i++) {
+  firstLetter[i].addEventListener("mouseover", function(event) {
     event.target.className = "fl2";
-    // on mouseout return to regular style
-    originalStyle[0].addEventListener("mouseout", function (event) {
-      event.target.className = "fl";
-    })
   }, false);
-</script>
+      // on mouseout return to regular style
+    originalStyle[i].addEventListener("mouseout", function (event) {
+      event.target.className = "fl";
+    }, false);
+  }
+  };
+  bob();
+  
+  function fred () {
+    firstLetter.map()
+  }  
+
+</script>  -->
 </body>
 </html>
