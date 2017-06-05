@@ -5,6 +5,18 @@ or
 on hover then words rearrange themselves into a the chiastic pattern so it's easy to see.
 
 
+window.onload = function(){
+  var elements = document.getElementsByClassName("each-word")
+  for (var i=0; i<elements.length; i++){
+    elements[i].innerHTML = elements[i].innerHTML.replace(/\\b([a-z])([a-z]+)?\\b/gim, "<span class='first-letter'>$1</span>$2")
+  }
+}
+
+
+
+
+
+
 colors http://materializecss.com/color.html
 
 #e8f5e9 green lighten-5
@@ -21,3 +33,32 @@ colors http://materializecss.com/color.html
 #69f0ae green accent-2
 #00e676 green accent-3
 #00c853 green accent-4
+
+
+<script>
+  var test = document.getElementById("test");
+  
+  
+  // this handler will be executed only once when the cursor moves over the unordered list
+  test.addEventListener("mouseenter", function( event ) {   
+    // highlight the mouseenter target
+    event.target.style.color = "red";
+
+    // reset the color after a short delay
+    setTimeout(function() {
+      event.target.style.color = "";
+    }, 5500);
+  }, false);
+  
+  
+  // this handler will be executed every time the cursor is moved over a different list item
+  test.addEventListener("mouseover", function( event ) {   
+    // highlight the mouseover target
+    event.target.style.color = "orange";
+
+    // reset the color after a short delay
+    setTimeout(function() {
+      event.target.style.color = "";
+    }, 5500);
+  }, false);
+</script> 
