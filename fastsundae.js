@@ -1,9 +1,59 @@
 
-function addChiasmus(){
+
+// document.getElementById('toggleChiasmus').addEventListener('click', toggleChiasmus, false);
+
+
+
+// function myFunction() {
+//                 var change = document.getElementById("toggle");
+//                 if (change.innerHTML == "on")
+//                 {
+//                     change.innerHTML = "off";
+//                 }
+//                 else {
+//                     change.innerHTML = "on";
+//                 }
+//             }
+
+
+function showChiasmus(){
   document.getElementById('joe').innerHTML=`${isaiah}`;
 }
 
-document.getElementById('seeChiasmus').addEventListener('click',addChiasmus,false);
+function hideChiasmus() {
+  document.getElementById('joe').innerHTML=`${fastSunday}`;
+}
+
+
+
+function toggleChiasmus () {
+  const buttonState = document.getElementById("toggleChiasmus").innerHTML;
+  
+  function changeButtonText () {
+    var checkButton = document.getElementById("toggleChiasmus");
+    if (checkButton.innerHTML == "Show") {
+      checkButton.innerHTML = "Hide";
+    } else {
+      checkButton.innerHTML = "Show";
+    }
+  }
+  
+  
+  
+  
+  switch (buttonState) {
+    case 'Show':
+      showChiasmus();
+      changeButtonText();
+      break;
+    case 'Hide':
+      hideChiasmus();
+      changeButtonText();
+      break;
+  }
+  
+}
+
 
 const isaiah = `
 <div>
@@ -18,4 +68,12 @@ const isaiah = `
 <p id='ch'>&nbsp &nbsp are</p>
 <p id='ch'>&nbsp starving</p>
 <p id='ch'>inside.</p> 
+</div> `;
+
+const fastSunday = `
+<div>
+  <p id='joe'>
+    Inside starvation are individual attitudes.<br>
+    Hippocritical attitudes. Individuals are starving inside.
+  </p>
 </div> `;
