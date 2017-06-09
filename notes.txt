@@ -1,3 +1,16 @@
+6/6/17: do some stuff with UN17 images; try to store images in firebase and retrieve from firebase.
+Maybe have thumbnails and make a tooltip that has a brief description of the development goal with a link to the actual UN website.
+
+  </div>
+  <div id="progress">
+    <progress value="0" max="100" id="uploader">0%</progress>
+    <input type="file" value="upload" id="fileButton" />
+  </div>
+
+
+
+
+Old:
 click a button and see all first letter chiasmus in different color
 or
 hover over lyrics and see first letters fade into different color and get bigger font before fading back to normal (trigger some css transition or something)

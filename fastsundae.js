@@ -25,7 +25,7 @@ function hideChiasmus() {
 }
 
 
-
+// got changeButton to work inside of toggleChiasmus; could it be outside?
 function toggleChiasmus () {
   const buttonState = document.getElementById("toggleChiasmus").innerHTML;
   

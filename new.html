@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+  <title>Make a button</title>
+</head>
+<body>
+<div id="theBox">
+  <button id="myButton" type="input" onclick=changeImage()>Show</button>
+  <div id="pickUN"></div>
+  
+<script>
+// write a function so click changes the image; then cycles through the images.
+// try document.getElementById('myButton').addEventListener('click', someFunction);
+// use a counter or calculate a random number of the number of images.
+// build the number into the image variable placeholder.
+
+function changeImage(){
+
+  const image = document.getElementById('pickUN');
+  image.innerHTML = `${image1}`;
+  changeButtonText();
+  
+  var counter = 0;
+  
+  function changeButtonText () {
+    var buttonText = document.getElementById('myButton');
+    if (buttonText.innerHTML == 'Show') {
+      buttonText.innerHTML = 'Hide';
+      counter = counter ++;
+      console.log(counter);
+    } else {
+      buttonText.innerHTML = 'Show';
+      counter = counter ++
+      console.log(counter);
+    } 
+    
+    
+  }
+ 
+  // if (image === '') {
+  //   image.innerHTML = `${image1}`;
+  // } else {
+  //   return image;
+  // }
+ 
+ 
+} 
+
+
+
+const image1 = `<img src="UNimages/UN9industry.png">`;
+var image2 = `<img src="UNimages/UN9industry.png">`;
+var image3 = `<img src="UNimages/UN9industry.png">`;
+var image4 = `<img src="UNimages/UN9industry.png">`;
+var image5 = `<img src="UNimages/UN9industry.png">`;
+ 
+ 
+ 
+</script>  
+</div>  
+  
+  
+  
+  
+</body>
+</html>

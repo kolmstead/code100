@@ -8,7 +8,7 @@
 <body>
   <div class="lyric">
   <div class="lyric-header">
-  <h2>Fast Sunday</h2><button id="toggleChiasmus" onclick="toggleChiasmus()">Show</button>
+  <h2>Fast Sunday</h2><button id="toggleChiasmus" onclick=toggleChiasmus()>Show</button>
   </div>
   <p id='joe'>
     Inside starvation are individual attitudes.<br>
@@ -16,7 +16,71 @@
   </p>
   </div>
   
+    <h4 data-cloud9-id='13' id="kent"></h4>
+    <div data-cloud9-id='14' id="un">
+      <a data-cloud9-id='15' href="http://www.un.org/sustainabledevelopment/sustainable-development-goals/" target="_blank"><img data-cloud9-id='16' src="UNimages/UN3health.png"></a>
+      <img data-cloud9-id='17' src="UNimages/UN6water.png">
+      <img data-cloud9-id='18' src="UNimages/UN7energy.png">
+      <img data-cloud9-id='19' src="UNimages/UN8education.png">
+      <img data-cloud9-id='20' src="UNimages/UN9industry.png">
+    </div>
+    
+    <div id="progress">
+      <progress value="0" max="100" id="uploader">0%</progress>
+      <input type="file" value="upload" id="fileButton" />
+    </div>
 
+
+<!-- firebase stuff -->
+<script src="https://www.gstatic.com/firebasejs/4.1.1/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDrGBNZqclbA1Q9vAVd32EAi4ewkTEz5Ko",
+    authDomain: "fastsundae.firebaseapp.com",
+    databaseURL: "https://fastsundae.firebaseio.com",
+    projectId: "fastsundae",
+    storageBucket: "fastsundae.appspot.com",
+    messagingSenderId: "780776732122"
+  };
+  firebase.initializeApp(config);
+</script>
+<script>
+  //Get Elements
+var uploader = document.getElementById('uploader');
+var fileButton = document.getElementById('fileButton');
+
+// listen for file selection
+fileButton.addEventListener('change', function(e){
+  // Get file
+  var file = e.target.files[0];
+  
+  // Create a storage ref
+  var storageRef = firebase.storage().ref('un_images/' + file.name);
+  
+  // Upload file
+  var task = storageRef.put(file);
+  
+  // Update progress bar
+  task.on('state_changed',
+    
+    function progress(snapshot) {
+      var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      uploader.value = percentage;
+      
+    },
+    
+    function error(err) {
+      
+    },
+    
+    function complete() {
+      
+    }
+  )
+  
+});
+</script>
 <script src='fastsundae.js'></script>
 </body>
 </html>

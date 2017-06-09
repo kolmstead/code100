@@ -1,0 +1,174 @@
+<!doctype html>
+<html>
+<head>
+  <title>Make a button</title>
+  
+<style>
+body {
+  padding:0;
+  margin:0;
+}
+#wrapper {
+  width:630px;
+  margin:30px auto 0;
+}
+ul {
+  margin:0;
+  padding:0;
+  list-style:none;
+  height:30px;
+}
+li {
+  float:left;
+  margin-right:20px;
+}
+a {
+  font-family:Arial, Helvetica, sans-serif;
+  color:#000;
+  text-decoration:none;
+}
+.box {
+  width:20px;
+  height:20px;
+  margin-right:10px;
+  margin-bottom:10px;
+  float:left;
+}
+.blue {
+  background:#00f;
+}
+.red {
+  background:#f00;
+}
+.selected {
+  font-weight:bold;
+}
+
+#theBox {
+  padding: 20px;
+}
+</style>
+</head>
+<body>
+<div id="theBox">
+  <button id="myButton" type="input">Click</button>
+  <div id="pickUN"></div>
+</div>
+
+<div id="wrapper">
+  <ul>
+    <li><a id="blue" href="#">Blue</a></li>
+    <li><a id="red" href="#">Red</a></li>
+    <li><a id="show-all" href="#">Show All</a></li>
+  </ul>
+  <div class="box blue"></div>
+  <div class="box blue"></div>
+  <div class="box blue"></div>
+  <div class="box red"></div>
+  <div class="box red"></div>
+  <div class="box red"></div>
+</div>
+
+
+<script>
+// write a function so click changes the image; then cycles through the images.
+// try document.getElementById('myButton').addEventListener('click', someFunction);
+// use a counter or calculate a random number of the number of images.
+// build the number into the image variable placeholder.
+
+// var varname = prompt('Variable name:');
+// var value = 42;
+// this[varname] = value;
+
+//a code example
+var divs = document.getElementsByClassName('box'),
+    blueDivs = document.getElementsByClassName('blue'),
+    redDivs = document.getElementsByClassName('red'),
+    blue = document.getElementById('blue'),
+    red = document.getElementById('red'),
+    showAll = document.getElementById('show-all');
+
+function hideDivs() {
+  for (var i = 0; i < divs.length; i++) {
+    divs[i].style.display = 'none';
+  }
+}
+
+function showDivs(el) {
+  var div;
+  if (el === divs) {
+    div = el;
+  } else {
+    div = this[el + 'Divs'];
+  }
+  for (var i = 0; i < div.length; i++) {
+    div[i].style.display = 'block';
+  }
+}
+
+function click(e) {
+  e.preventDefault();
+  hideDivs();
+  var target = e.target.id;
+  if (target === 'show-all') {
+    showDivs(divs);
+  } else {
+    showDivs(target);
+  }
+}
+
+blue.addEventListener('click', click, false);
+red.addEventListener('click', click, false);
+showAll.addEventListener('click', click, false);
+//end code example
+
+
+
+
+
+
+// function showDivs(el) {
+//   var div = this[el + ‘Divs’];
+//   for (var i = 0; i < div.length; i++) {
+//     div[i].style.display = 'block';
+//   }
+// }
+
+// showDivs();
+
+document.getElementById('myButton').addEventListener('click', changeImage);
+function changeImage(){
+  
+  function getRandomIntInclusive(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+  
+  function makeImageVariable(x){
+    const imgVar = this["image" + x];
+    console.log("It's here", imgVar);
+    image.innerHTML = `${imgVar}`;
+  }
+
+  const image = document.getElementById('pickUN');
+  const x = getRandomIntInclusive(1,5);
+  makeImageVariable(x);
+}
+
+var image1 = `<img src="UNimages/UN6water.png">`;
+var image2 = `<img src="UNimages/UN7energy.png">`;
+var image3 = `<img src="UNimages/UN3health.png">`;
+var image4 = `<img src="UNimages/UN8education.png">`;
+var image5 = `<img src="UNimages/UN9industry.png">`;
+ 
+
+ 
+</script>  
+  
+  
+  
+  
+  
+</body>
+</html>
