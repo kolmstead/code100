@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+  <title>try svg</title>
+  <style>
+    button {
+      margin: 10px;
+    }
+    
+    #svg {
+      padding: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      background-color: #80d7ff;
+    }
+  </style>
+</head>
+<body>
+<button type="input" id="makeSVG">Click</button>
+<button type="input" id="resetButton">Reset</button>
+<div id="svg"></div>
+<script>
+
+document.getElementById("makeSVG").addEventListener("click", makeSVG);
+document.getElementById("resetButton").addEventListener("click", clearSVG);
+
+function makeSVG () {
+
+  var svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svgElement.setAttribute("height", "60px");
+  svgElement.setAttribute("width", "60px");
+  svgElement.setAttribute("class", "someSVG");
+  document.getElementById("svg").appendChild(svgElement);
+
+  
+  var rectElement = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+  rectElement.setAttribute("fill", "#283593");
+  rectElement.setAttribute("width", "50px");
+  rectElement.setAttribute("height", "50px");
+  rectElement.setAttribute("x", "5px");
+  rectElement.setAttribute("y", "5px");
+  rectElement.setAttribute("rx", "10px");
+  rectElement.setAttribute("ry", "10px");
+  
+  svgElement.appendChild(rectElement);
+}
+
+function clearSVG () {
+  
+  const clearSVG = document.getElementById("svg");
+  clearSVG.innerHTML = "";
+}
+
+
+</script>
+</body>
+</html>
+
+<!-- add a button that clears all the stuff in div#svg
+      get an input that decides how many times to run makeSVG() and a function to repeat makeSVG by the input amount
+      -->
