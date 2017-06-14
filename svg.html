@@ -14,16 +14,31 @@
       justify-content: center;
       background-color: #80d7ff;
     }
+    
+    #tooltip {
+      /*display: block;/*none, block or inline */
+      /*visibility: visible; /* visible or hidden */
+      opacity: 1;
+      padding: 5px;
+      border: 1px black solid;
+      height: 15px;
+      width: 80px;
+      text-align: center;
+      position: relative;
+      
+    }
   </style>
 </head>
 <body>
 <button type="input" id="makeSVG">Click</button>
 <button type="input" id="resetButton">Reset</button>
 <div id="svg"></div>
+<p id=tooltip>A tooltip.<p>
 <script>
 
 document.getElementById("makeSVG").addEventListener("click", makeSVG); //button to make svg element
 document.getElementById("resetButton").addEventListener("click", clearSVG); //button to clear svg elements
+document.getElementById('tooltip').addEventListener('mouseover', displayToolTip);
 
   // counter to add unique id to rect elements created by click/makeSVG()function
   let counter = 0;
@@ -62,6 +77,25 @@ function clearSVG () {
   clearSVG.innerHTML = "";
 }
 
+
+function displayToolTip () {
+  const tip = document.getElementById('tooltip');
+  // tip.style.visibility === "visible" ? "hidden" : "visible";
+  if (tip.style.opacity === "1") {
+  tip.style.opacity = "0";
+  } else { 
+   tip.style.opacity = "1";
+  }
+}
+// function displayToolTip () {
+//   const tip = document.getElementById('tooltip');
+//   // tip.style.visibility === "visible" ? "hidden" : "visible";
+//   if (tip.style.visibility === "visible") {
+//   tip.style.visibility = "hidden";
+//   } else { 
+//   tip.style.visibility = "visible";
+//   }
+// }
 // function getPosition () {
   
 //   var bodyRect = document.body.getBoundingClientRect(),
