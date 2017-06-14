@@ -62,7 +62,7 @@ const isaiah = `
 <p id='ch'>&nbsp &nbsp are</p>
 <p id='ch'>&nbsp &nbsp &nbsp individual</p>
 <p id='ch'>&nbsp &nbsp &nbsp &nbsp attitudes.</p>
-<p id='ch'>&nbsp &nbsp &nbsp &nbsp &nbsp Hippocritical</p>
+<p id='ch'>&nbsp &nbsp &nbsp &nbsp &nbsp Hypocritical</p>
 <p id='ch'>&nbsp &nbsp &nbsp &nbsp attitudes.</p>
 <p id='ch'>&nbsp &nbsp &nbsp Individuals</p>
 <p id='ch'>&nbsp &nbsp are</p>
@@ -74,6 +74,6 @@ const fastSunday = `
 <div>
   <p id='joe'>
     Inside starvation are individual attitudes.<br>
-    Hippocritical attitudes. Individuals are starving inside.
+    Hypocritical attitudes. Individuals are starving inside.
   </p>
 </div> `;
