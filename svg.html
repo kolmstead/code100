@@ -24,21 +24,36 @@
       height: 15px;
       width: 80px;
       text-align: center;
-      position: relative;
+      position: absolute;
       
     }
+    
+      #learn {
+      font-family: Arial, sans-serif;
+      background-color: #9ccc65 ;
+      padding: 5px 5px 5px 5px;
+      border: 1px black solid;
+      height: 25px;
+      width: 100px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+    }
+    
   </style>
 </head>
 <body>
 <button type="input" id="makeSVG">Click</button>
 <button type="input" id="resetButton">Reset</button>
 <div id="svg"></div>
-<p id=tooltip>A tooltip.<p>
+<!--<p id=tooltip>A tooltip.<p>-->
+<h1 id="learn">Learn</h1>
 <script>
 
 document.getElementById("makeSVG").addEventListener("click", makeSVG); //button to make svg element
 document.getElementById("resetButton").addEventListener("click", clearSVG); //button to clear svg elements
-document.getElementById('tooltip').addEventListener('mouseover', displayToolTip);
+//document.getElementById('tooltip').addEventListener('mouseover', makeSVGToolTip);
+
 
   // counter to add unique id to rect elements created by click/makeSVG()function
   let counter = 0;
@@ -77,16 +92,33 @@ function clearSVG () {
   clearSVG.innerHTML = "";
 }
 
+const textInToolTip = `<p id="tooltip">This element is now here</p>`;
 
-function displayToolTip () {
-  const tip = document.getElementById('tooltip');
-  // tip.style.visibility === "visible" ? "hidden" : "visible";
-  if (tip.style.opacity === "1") {
-  tip.style.opacity = "0";
-  } else { 
-   tip.style.opacity = "1";
-  }
+function makeSVGToolTip () {
+  console.log(tipLocation.left);
+  const tip = document.createElement('p');
+  document.body.appendChild(tip);
+  tip.innerHTML = `${textInToolTip}`;
+  document.getElementById('tooltip').style.left = `${tipLocation.left}px`;
+  // let joey = document.getElementById('tooltip');
+  // joey.style.left = `"${tipLocation.left}px"`;
 }
+
+// show or hide a element with id tooltip
+
+// function displayToolTip () {
+//   const tip = document.getElementById('tooltip');
+//   // tip.style.visibility === "visible" ? "hidden" : "visible";
+//   if (tip.style.opacity === "1") {
+//   tip.style.opacity = ".5";
+//   tip.style.left = "200px";
+//   tip.style.top = "150px";
+//   } else { 
+//   tip.style.opacity = "1";
+//   }
+// }
+
+
 // function displayToolTip () {
 //   const tip = document.getElementById('tooltip');
 //   // tip.style.visibility === "visible" ? "hidden" : "visible";
@@ -113,12 +145,18 @@ function listenSVG () {
   
   for (var i=0; i<aRect.length; i++) {
     aRect[i].addEventListener('click', getTarget);
+    aRect[i].addEventListener('click', makeSVGToolTip);
   }
 }
 
+let tipLocation = "";
 function getTarget (e) {
-  console.log(e.target.id);
-  console.log(e.target.getBoundingClientRect().right);
+  tipLocation = e.target.getBoundingClientRect();
+  return tipLocation;
+  // const fred = e.target.getBoundingClientRect().y;
+  // console.log(bob);
+  // console.log(e.target.id);
+  // console.log(e.target.getBoundingClientRect().right);
 }
 
 
@@ -137,11 +175,13 @@ function getTarget (e) {
       
       get an input that decides how many times to run makeSVG() and a function to repeat makeSVG by the input amount
       
-      make a tool tip that shows the position information on hover
+      make a tool tip that shows the position information on hover, then off on mouseout
       
       left click changes color
       
       make a way to delete a square
       
       add the rect counter number inside the rect
+      
+      6-15-2017 -- have tool tip lining up with clicked squares -- need to not have multi tips piling up on left - just see the one.
       -->
