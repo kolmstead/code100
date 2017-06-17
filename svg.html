@@ -18,13 +18,16 @@
     #tooltip {
       /*display: block;/*none, block or inline */
       /*visibility: visible; /* visible or hidden */
-      opacity: 1;
+      opacity: 0.2;
       padding: 5px;
       border: 1px black solid;
       height: 15px;
-      width: 80px;
+      width: 140px;
       text-align: center;
+      background-color: #80d7ff;
+      border-radius: 6px;
       position: absolute;
+      z-index: 2;
       
     }
     
@@ -46,7 +49,7 @@
 <button type="input" id="makeSVG">Click</button>
 <button type="input" id="resetButton">Reset</button>
 <div id="svg"></div>
-<!--<p id=tooltip>A tooltip.<p>-->
+<p id=tooltip>`${textInToolTip}`<p>
 <h1 id="learn">Learn</h1>
 <script>
 
@@ -77,6 +80,7 @@ function makeSVG () {
   rectElement.setAttribute("rx", "10px");
   rectElement.setAttribute("ry", "10px");
   rectElement.setAttribute("id", "Rect" + `${counter}`);
+  rectElement.setAttribute("z-index", 1);
   
   svgElement.appendChild(rectElement);
 
@@ -92,16 +96,23 @@ function clearSVG () {
   clearSVG.innerHTML = "";
 }
 
-const textInToolTip = `<p id="tooltip">This element is now here</p>`;
+//const textInToolTip = `<p id="tooltip">This element is now here</p>`;
+const textInToolTip = `This is where I am`;
 
 function makeSVGToolTip () {
   console.log(tipLocation.left);
-  const tip = document.createElement('p');
-  document.body.appendChild(tip);
+  const tip = document.getElementById('tooltip');
   tip.innerHTML = `${textInToolTip}`;
-  document.getElementById('tooltip').style.left = `${tipLocation.left}px`;
-  // let joey = document.getElementById('tooltip');
-  // joey.style.left = `"${tipLocation.left}px"`;
+  tip.style.top = `${tipLocation.top - 20}px`;
+  tip.style.left = `${tipLocation.left + 10}px`;
+  tip.style.opacity = 0.9;
+  tip.style.zindex = 1.5;
+}
+
+function fadeToolTip () {
+  const tip = document.getElementById('tooltip');
+  tip.style.opacity = 0;
+  tip.style.zindex = -1;
 }
 
 // show or hide a element with id tooltip
@@ -144,8 +155,9 @@ const aRect = document.getElementsByTagName("rect");
 function listenSVG () {
   
   for (var i=0; i<aRect.length; i++) {
-    aRect[i].addEventListener('click', getTarget);
-    aRect[i].addEventListener('click', makeSVGToolTip);
+    aRect[i].addEventListener('mouseover', getTarget);
+    aRect[i].addEventListener('mouseover', makeSVGToolTip);
+    aRect[i].addEventListener('mouseout', fadeToolTip);
   }
 }
 
@@ -182,6 +194,9 @@ function getTarget (e) {
       make a way to delete a square
       
       add the rect counter number inside the rect
+      
+      6-16-2017: need to deal with layers; trying to get tooltip not to disappear until off the sqaure, not when overlapping
+      the tooltip.
       
       6-15-2017 -- have tool tip lining up with clicked squares -- need to not have multi tips piling up on left - just see the one.
       -->

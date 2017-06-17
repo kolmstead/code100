@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+  <title>storage</title>
+</head>
+<body>
+  <button id="count">Click</button>
+  <button id="displayCount">Show Count</button>
+  <p id="showCount"></p>
+  
+<script>
+
+document.getElementById('count').addEventListener('click', clickAndStore);
+document.getElementById('displayCount').addEventListener('click', showStore );
+
+// when, how, why use arrow functions?
+// make a transition where the count fades out after it's shown
+// make a reset button
+// add some photos to click to get counts on the photo
+// const clickAndStore = () => { console.log("Help"); };
+
+// const showStore = () => { console.log("Hello"); };
+
+let counter = 0;
+
+function clickAndStore() { 
+  counter += 1;
+  localStorage.setItem("clickCount", counter);
+  
+}
+
+function showStore() { 
+  document.getElementById('showCount').innerHTML = localStorage.getItem('clickCount');
+  
+}
+
+  
+  
+  
+  
+  
+  
+</script>
+</body>
+</html>
