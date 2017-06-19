@@ -7,11 +7,15 @@
   <button id="count">Click</button>
   <button id="displayCount">Show Count</button>
   <p id="showCount"></p>
+  <div id="pic1"><img src="UNimages/UN3health.png" alt="stuff"/></div>
+  <div id="pic2"><img src="UNimages/UN8education.png" alt="more stuff"/></div>
   
 <script>
 
 document.getElementById('count').addEventListener('click', clickAndStore);
 document.getElementById('displayCount').addEventListener('click', showStore );
+document.getElementById('pic1').addEventListener('click', countOne);
+// document.getElementById('pic2').addEventListener('click', countTwo);
 
 // when, how, why use arrow functions?
 // make a transition where the count fades out after it's shown
@@ -33,7 +37,22 @@ function showStore() {
   document.getElementById('showCount').innerHTML = localStorage.getItem('clickCount');
   
 }
-
+// make shorter; how to use es6; add for second picture
+let counterOne;
+function countOne () {
+  if (!localStorage.getItem('counterOne')) {
+    console.log('if?');
+    let counterOne = 0;
+    localStorage.setItem('counterOne', counterOne);
+  } else if (localStorage.getItem('counterOne')) {
+    console.log('in the middle');
+    counterOne = parseInt(localStorage.getItem('counterOne')) + 1;
+    localStorage.setItem('counterOne', counterOne);
+    
+    } else {
+    console.log('else something does not work');
+  }
+}
   
   
   
