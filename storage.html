@@ -9,13 +9,17 @@
   <p id="showCount"></p>
   <div id="pic1"><img src="UNimages/UN3health.png" alt="stuff"/></div>
   <div id="pic2"><img src="UNimages/UN8education.png" alt="more stuff"/></div>
+  <div id="twopics">
+    <div id='p1'></div>
+    <div id='p2'></div>
+  </div>
   
 <script>
 
 document.getElementById('count').addEventListener('click', clickAndStore);
 document.getElementById('displayCount').addEventListener('click', showStore );
 document.getElementById('pic1').addEventListener('click', countOne);
-// document.getElementById('pic2').addEventListener('click', countTwo);
+document.getElementById('pic2').addEventListener('click', countOne);
 
 // when, how, why use arrow functions?
 // make a transition where the count fades out after it's shown
@@ -41,20 +45,24 @@ function showStore() {
 let counterOne;
 function countOne () {
   if (!localStorage.getItem('counterOne')) {
-    console.log('if?');
-    let counterOne = 0;
+    let counterOne = 1;
     localStorage.setItem('counterOne', counterOne);
   } else if (localStorage.getItem('counterOne')) {
-    console.log('in the middle');
     counterOne = parseInt(localStorage.getItem('counterOne')) + 1;
     localStorage.setItem('counterOne', counterOne);
-    
-    } else {
-    console.log('else something does not work');
   }
 }
-  
-  
+
+const myUN17 = {"un1":0,"un2":0,"un3":0,"un4":0};
+
+localStorage.setItem('myUN17', myUN17);
+myUN17.un5 = 0;
+localStorage.setItem('myUN17', myUN17);
+// compare pictures with same score, picked = +1, not picked = -1; some pictures should get higher scores and others lower
+// try a small object with 3 or 4 items
+// 
+
+//function pseudo code -- write the pseudo code for how I think function should work
   
   
   
@@ -62,3 +70,39 @@ function countOne () {
 </script>
 </body>
 </html>
+
+<!--
+
+function changeImage() {
+
+  const images = [
+    `<img src="//placehold.it/100x100">`,
+    `<img src="//placehold.it/200x100">`,
+    `<img src="//placehold.it/300x100">`,
+    `<img src="//placehold.it/400x100">`,
+    `<img src="//placehold.it/500x100">`
+  ];
+  
+  function getRandomIntInclusive(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+  
+  function makeImageVariable(x){
+    const imgVar = images[x];
+    console.log("It's here", imgVar);
+    image.innerHTML = `${imgVar}`;
+  }
+
+  const image = document.getElementById('image');
+  const x = getRandomIntInclusive(1,5);
+  makeImageVariable(x);
+}
+
+
+document.getElementById('myButton')
+  .addEventListener('click', changeImage);
+
+
+-->
