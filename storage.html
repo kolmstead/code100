@@ -1,46 +1,66 @@
 <!doctype html>
 <html>
 <head>
-  <title>storage</title>
+<title>storage</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+#left {
+  width: 20%;
+  float: left;
+  height: 80%;
+  visibility: hidden;
+}
+
+#right {
+  width: 20%;
+  float: right;
+  visibility: hidden;
+}
+#twopics {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  padding: 40px;
+  float: left;
+}
+  
+</style>
 </head>
 <body>
   <button id="count">Click</button>
   <button id="displayCount">Show Count</button>
-  <p id="showCount"></p>
-  <div id="pic1"><img src="UNimages/UN3health.png" alt="stuff"/></div>
-  <div id="pic2"><img src="UNimages/UN8education.png" alt="more stuff"/></div>
+  <button id="reset">Reset</button>
+  <p id='showCount'>0</p>
+  <div id="left">left</div>
   <div id="twopics">
     <div id='p1'></div>
     <div id='p2'></div>
   </div>
+  <div id="right">right</div>
   
 <script>
 
 document.getElementById('count').addEventListener('click', clickAndStore);
 document.getElementById('displayCount').addEventListener('click', showStore );
-document.getElementById('pic1').addEventListener('click', countOne);
-document.getElementById('pic2').addEventListener('click', countOne);
-
-// when, how, why use arrow functions?
-// make a transition where the count fades out after it's shown
-// make a reset button
-// add some photos to click to get counts on the photo
-// const clickAndStore = () => { console.log("Help"); };
-
-// const showStore = () => { console.log("Hello"); };
+document.getElementById('reset').addEventListener('click', resetStore);
 
 let counter = 0;
 
 function clickAndStore() { 
   counter += 1;
   localStorage.setItem("clickCount", counter);
-  
 }
 
 function showStore() { 
   document.getElementById('showCount').innerHTML = localStorage.getItem('clickCount');
-  
 }
+
+function resetStore() {
+  counter = 0;
+  localStorage.setItem("clickCount", counter);
+  showStore();
+}
+
 // make shorter; how to use es6; add for second picture
 let counterOne;
 function countOne () {
@@ -53,17 +73,66 @@ function countOne () {
   }
 }
 
-const myUN17 = {"un1":0,"un2":0,"un3":0,"un4":0};
+//UN object data
 
-localStorage.setItem('myUN17', myUN17);
-myUN17.un5 = 0;
-localStorage.setItem('myUN17', myUN17);
-// compare pictures with same score, picked = +1, not picked = -1; some pictures should get higher scores and others lower
-// try a small object with 3 or 4 items
-// 
-
-//function pseudo code -- write the pseudo code for how I think function should work
+const un3 = {
+  score: 0,
+  pairs: [],
+  image: 'UNimages/UN3health.png',
+  label: 'Health'
+};
   
+const un6 = {
+  score: 0,
+  pairs: [],
+  image: 'UNimages/UN6water.png',
+  label: 'Water'
+};
+
+const un7 = {
+  score: 0,
+  pairs: [],
+  image: 'UNimages/UN7energy.png',
+  label: 'Energy'
+};
+
+const un4 = {
+  score: 0,
+  pairs: [],
+  image: 'UNimages/UN4education.png',
+  label: 'Education'
+};
+
+const un9 = {
+  score: 0,
+  pairs: [],
+  image: 'UNimages/UN9industry.png',
+  label: 'Industry'
+};
+  
+  
+function pickUN (a,b) {
+  //show image a
+  //add event listener
+  //show image b
+  //add event listener
+  //for clicked imaged score +1
+  //on click a is recorded in b 'pairs' and b is recorded in a 'pairs'
+  //
+
+  document.getElementById('p1').innerHTML = `<img src=${a.image}>`;
+  document.getElementById('p2').innerHTML = `<img src=${b.image}>`;
+
+};
+
+
+let [a,b] = [un6,un4]
+  
+pickUN(a,b);
+
+// when a choice is clicked the loop stores info and picks another pair to display.
+// see how to save info to a file (modify the object in the file)
+// so the current state of a picked item can be displayed
   
   
   
