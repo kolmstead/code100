@@ -30,19 +30,35 @@
   <button id="count">Click</button>
   <button id="displayCount">Show Count</button>
   <button id="reset">Reset</button>
+  <button id="pairs">Get Pairs</button>
+  <input id="matchPick" type="text" value=""></input>
+  <p id='showUN'></p>
   <p id='showCount'>0</p>
-  <div id="left">left</div>
+  <div id="left">
+  </div>
   <div id="twopics">
     <div id='p1'></div>
     <div id='p2'></div>
   </div>
   <div id="right">right</div>
-  
+
+<script src="makePairs.js"></script>  
 <script>
 
 document.getElementById('count').addEventListener('click', clickAndStore);
 document.getElementById('displayCount').addEventListener('click', showStore );
 document.getElementById('reset').addEventListener('click', resetStore);
+document.getElementById('pairs').addEventListener('click', blahBlah);
+document.getElementById('matchPick').addEventListener('keyup', function (e) { 
+  if ( e.which===13 ) { getTheUN(); }});
+
+// function (e) {
+//   if (e.which === 13) {
+
+//     console.log("Enter was clicked");
+//     getTheUN ();
+//   }
+// });
 
 let counter = 0;
 
@@ -62,16 +78,16 @@ function resetStore() {
 }
 
 // make shorter; how to use es6; add for second picture
-let counterOne;
-function countOne () {
-  if (!localStorage.getItem('counterOne')) {
-    let counterOne = 1;
-    localStorage.setItem('counterOne', counterOne);
-  } else if (localStorage.getItem('counterOne')) {
-    counterOne = parseInt(localStorage.getItem('counterOne')) + 1;
-    localStorage.setItem('counterOne', counterOne);
-  }
-}
+// let counterOne;
+// function countOne () {
+//   if (!localStorage.getItem('counterOne')) {
+//     let counterOne = 1;
+//     localStorage.setItem('counterOne', counterOne);
+//   } else if (localStorage.getItem('counterOne')) {
+//     counterOne = parseInt(localStorage.getItem('counterOne')) + 1;
+//     localStorage.setItem('counterOne', counterOne);
+//   }
+// }
 
 //UN object data
 
@@ -122,11 +138,23 @@ function pickUN (a,b) {
 
   document.getElementById('p1').innerHTML = `<img src=${a.image}>`;
   document.getElementById('p2').innerHTML = `<img src=${b.image}>`;
+  // document.getElementById('p1').innerHTML = `<img src=${a}>`;
+  // document.getElementById('p2').innerHTML = `<img src=${b}>`;
+
 
 };
 
 
-let [a,b] = [un3,un9]
+
+const testPair = {
+  0: [ `${un3.image}`, `${un4.image}` ],
+  1: [ un3, un6 ],
+  2: [ un3, un7 ]
+}
+
+//let [a,b] = [pairs[0], pairs[1]];
+let a = testPair[1][0];
+let b = testPair[1][1];
   
 pickUN(a,b);
 
@@ -134,9 +162,26 @@ pickUN(a,b);
 // see how to save info to a file (modify the object in the file)
 // so the current state of a picked item can be displayed
   
-  
+
+//compare two things and pick winner
+let match = 92;
+function blahBlah () {
+  console.log("The choices are: ", unPairsArray[match]);
+  console.log("The winner is:", unPairsArray[match][1]);
+}
+
+function getTheUN () {
+  let cecy = document.getElementById('matchPick').value;
+  console.log(unPairsArray[cecy]);
+  document.getElementById('showUN').innerHTML = unPairsArray[cecy];
+}
+
+
+
+ 
   
 </script>
+<script src="makePairs.js"></script>
 </body>
 </html>
 
