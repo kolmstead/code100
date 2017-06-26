@@ -1,0 +1,19 @@
+#left {
+  width: 20%;
+  float: left;
+  height: 80%;
+  visibility: hidden;
+}
+
+#right {
+  width: 20%;
+  float: right;
+  visibility: hidden;
+}
+#twopics {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  padding: 40px;
+  float: left;
+}

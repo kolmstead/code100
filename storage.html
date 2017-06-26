@@ -3,28 +3,7 @@
 <head>
 <title>storage</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-#left {
-  width: 20%;
-  float: left;
-  height: 80%;
-  visibility: hidden;
-}
-
-#right {
-  width: 20%;
-  float: right;
-  visibility: hidden;
-}
-#twopics {
-  display: flex;
-  flex-direction: column;
-  width: 60%;
-  padding: 40px;
-  float: left;
-}
-  
-</style>
+<link rel="stylesheet" text="text/css" href="sdgStyles.css" />
 </head>
 <body>
   <button id="count">Click</button>
@@ -37,28 +16,22 @@
   <div id="left">
   </div>
   <div id="twopics">
-    <div id='p1'></div>
-    <div id='p2'></div>
+    <div id='p1'><img src="//placehold.it/150x150"></div>
+    <div id='p2'><img src="//placehold.it/150x150"></div>
   </div>
   <div id="right">right</div>
 
+<script src="unObjects.js"></script>
 <script src="makePairs.js"></script>  
 <script>
 
 document.getElementById('count').addEventListener('click', clickAndStore);
 document.getElementById('displayCount').addEventListener('click', showStore );
 document.getElementById('reset').addEventListener('click', resetStore);
-document.getElementById('pairs').addEventListener('click', blahBlah);
+document.getElementById('pairs').addEventListener('click', randomPair);
 document.getElementById('matchPick').addEventListener('keyup', function (e) { 
   if ( e.which===13 ) { getTheUN(); }});
 
-// function (e) {
-//   if (e.which === 13) {
-
-//     console.log("Enter was clicked");
-//     getTheUN ();
-//   }
-// });
 
 let counter = 0;
 
@@ -77,55 +50,13 @@ function resetStore() {
   showStore();
 }
 
-// make shorter; how to use es6; add for second picture
-// let counterOne;
-// function countOne () {
-//   if (!localStorage.getItem('counterOne')) {
-//     let counterOne = 1;
-//     localStorage.setItem('counterOne', counterOne);
-//   } else if (localStorage.getItem('counterOne')) {
-//     counterOne = parseInt(localStorage.getItem('counterOne')) + 1;
-//     localStorage.setItem('counterOne', counterOne);
-//   }
-// }
+// get a random integer in a range
+function getRandomIntInclusive(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
-//UN object data
-
-const un3 = {
-  score: 0,
-  pairs: [],
-  image: 'UNimages/UN3health.png',
-  label: 'Health'
-};
-  
-const un6 = {
-  score: 0,
-  pairs: [],
-  image: 'UNimages/UN6water.png',
-  label: 'Water'
-};
-
-const un7 = {
-  score: 0,
-  pairs: [],
-  image: 'UNimages/UN7energy.png',
-  label: 'Energy'
-};
-
-const un4 = {
-  score: 0,
-  pairs: [],
-  image: 'UNimages/UN4education.png',
-  label: 'Education'
-};
-
-const un9 = {
-  score: 0,
-  pairs: [],
-  image: 'UNimages/UN9industry.png',
-  label: 'Industry'
-};
-  
   
 function pickUN (a,b) {
   //show image a
@@ -138,9 +69,6 @@ function pickUN (a,b) {
 
   document.getElementById('p1').innerHTML = `<img src=${a.image}>`;
   document.getElementById('p2').innerHTML = `<img src=${b.image}>`;
-  // document.getElementById('p1').innerHTML = `<img src=${a}>`;
-  // document.getElementById('p2').innerHTML = `<img src=${b}>`;
-
 
 };
 
@@ -153,10 +81,10 @@ const testPair = {
 }
 
 //let [a,b] = [pairs[0], pairs[1]];
-let a = testPair[1][0];
-let b = testPair[1][1];
+// let a = testPair[1][0];
+// let b = testPair[1][1];
   
-pickUN(a,b);
+// pickUN(a,b);
 
 // when a choice is clicked the loop stores info and picks another pair to display.
 // see how to save info to a file (modify the object in the file)
@@ -164,19 +92,26 @@ pickUN(a,b);
   
 
 //compare two things and pick winner
-let match = 92;
-function blahBlah () {
-  console.log("The choices are: ", unPairsArray[match]);
-  console.log("The winner is:", unPairsArray[match][1]);
-}
 
+let joe = '';
+
+//show the pair from the index entered in the text box
 function getTheUN () {
-  let cecy = document.getElementById('matchPick').value;
-  console.log(unPairsArray[cecy]);
-  document.getElementById('showUN').innerHTML = unPairsArray[cecy];
+  let x = document.getElementById('matchPick').value; // the key id of the pair to view
+  document.getElementById('showUN').innerHTML = unPairsArray[x];
+  let a = eval(unPairsArray[x][0]);
+  let b = eval(unPairsArray[x][1]);
+  pickUN(a,b);
+
 }
 
-
+function randomPair () {
+  const x = getRandomIntInclusive(0,unPairsArray.length);
+  let a = eval(unPairsArray[x][0]);
+  let b = eval(unPairsArray[x][1]);
+  pickUN(a,b);
+  
+}
 
  
   
