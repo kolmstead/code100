@@ -6,9 +6,7 @@
 <link rel="stylesheet" text="text/css" href="sdgStyles.css" />
 </head>
 <body>
-  <button id="count">Click</button>
-  <button id="displayCount">Show Count</button>
-  <button id="reset">Reset</button>
+  <button id="storeFocusAreas">Reset FocusArea Scores</button>
   <button id="pairs">Get Pairs</button>
   <input id="matchPick" type="text" value=""></input>
   <p id='showUN'></p>
@@ -29,64 +27,46 @@
 <script src="makePairs.js"></script>  
 <script>
 
-document.getElementById('count').addEventListener('click', clickAndStore);
-document.getElementById('displayCount').addEventListener('click', showStore );
-document.getElementById('reset').addEventListener('click', resetStore);
+document.getElementById('storeFocusAreas').addEventListener('click', resetScores);
 document.getElementById('pairs').addEventListener('click', randomPair);
 document.getElementById('matchPick').addEventListener('keyup', function (e) { 
   if ( e.which===13 ) { getTheUN(); }});
-// document.getElementById('p1').addEventListener('click', function(){
-//   console.log("Clicked P1");
-//   scoreWinner();    
-//   randomPair();
-// });
-// document.getElementById('p2').addEventListener('click', function(){
-//   console.log("Clicked P2");
-//   scoreWinner();    
-//   randomPair();
-// });
 document.getElementById('twopics').addEventListener('click',whichClicked);
+
+// Store focusAreas to localStorage with a 0 score  **explore indexeddb and websql**
+
+let theScores = [["un1", 0],["un2", 0],["un3", 0],["un4",0],["un5",0],["un6",0],["un7",0],["un8",0],["un9",0],["un10",0],["un11",0],["un12",0],["un13",0],["un14",0],["un15",0],["un16",0]];
+
+function resetScores () {
+  for (i=0; i<theScores.length; i++) {
+    if (!localStorage.getItem(theScores[i][0])) {
+      localStorage.setItem(theScores[i][0],0);
+    } localStorage.setItem(theScores[i][0],0);
+  }  
+}
+
+
+
+
+
+// iAmClicked adds a score of 1 to the clicked item
+// need to work on scoring methods and algorithm. start by being able to keep score of what is picked
+// and maybe store the pair it beat. Need to decide storage method. Maybe mongodb. Maybe node.js. Maybe firebase.
 
 let iAmClicked = '';
 function whichClicked (e) {
   let clicked = e.target.parentNode;
-  console.log(clicked);
   if ( clicked.id === 'p1') {
-    console.log("clicked is", unPick[0]);
-    console.log(focusAreas[unPick[0]].label)
+    let p1score = localStorage.getItem(unPick[0]);
+    p1score++;
+    localStorage.setItem(unPick[0], p1score )
     randomPair();
   } else { 
-    console.log("clicked is", unPick[1]);
-    console.log(focusAreas[unPick[1]].label)
+    let p2score = localStorage.getItem(unPick[1]);
+    p2score++;
+    localStorage.setItem(unPick[1], p2score )
     randomPair();
   }
-
-}
-
-// get the clicked winner, increase it's score, get a new pair
-// after that, try to record it's opponent as well.
-function scoreWinner () {
-  let winnerA = document.getElementById('p1').getAttribute('data-unId');
-  let winnerB = document.getElementById('p2').getAttribute('data-unId');
-  console.log("winner is", winnerA);
-  console.log("the unPick is", unPick);
-}
-
-let counter = 0;
-
-function clickAndStore() { 
-  counter += 1;
-  localStorage.setItem("clickCount", counter);
-}
-
-function showStore() { 
-  document.getElementById('showCount').innerHTML = localStorage.getItem('clickCount');
-}
-
-function resetStore() {
-  counter = 0;
-  localStorage.setItem("clickCount", counter);
-  showStore();
 }
 
 // get a random integer in a range
@@ -98,18 +78,10 @@ function getRandomIntInclusive(min, max) {
 
 // this function takes the two selected object keys from randomPair() and displays .image property  
 function pickUN (a,b) {
-  //show image a
-  //add event listener
-  //show image b
-  //add event listener
-  //for clicked imaged score +1
-  //on click a is recorded in b 'pairs' and b is recorded in a 'pairs'
-  //
   document.getElementById('p1').innerHTML = `<img src=${a.image}>`;
   document.getElementById('p2').innerHTML = `<img src=${b.image}>`;
-  document.getElementById('p1').setAttribute('data-unId', a.slug);
-  document.getElementById('p2').setAttribute('data-unId', b.slug);
-
+  document.getElementById('p1').setAttribute('data-unId', a.slug); //check if this attribute is being used
+  document.getElementById('p2').setAttribute('data-unId', b.slug); //check if this attribute is being used
 };
 
 
