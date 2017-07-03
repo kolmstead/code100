@@ -60,3 +60,9 @@ button {
   width: 50%;
   margin-bottom: 10px;
 }
+
+footer {
+  display: block;
+  background: url('/UNimages/un17banner.png');
+  width: 200px;
+}

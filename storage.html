@@ -15,11 +15,15 @@
   <p id='showCount'>0</p>
   <div id="left">
   </div>
+  <div id="miniHeader"><img src="UNimages/un17banner.png" height="70px"></div>
+
   <div id="twopics">
     <div id='p1'><img src="//placehold.it/150x150"></div>
     <div id='p2'><img src="//placehold.it/150x150"></div>
   </div>
+
   <div id="right">right</div>
+
 
 <script src="unObjects.js"></script>
 <script src="makePairs.js"></script>  
@@ -31,7 +35,42 @@ document.getElementById('reset').addEventListener('click', resetStore);
 document.getElementById('pairs').addEventListener('click', randomPair);
 document.getElementById('matchPick').addEventListener('keyup', function (e) { 
   if ( e.which===13 ) { getTheUN(); }});
+// document.getElementById('p1').addEventListener('click', function(){
+//   console.log("Clicked P1");
+//   scoreWinner();    
+//   randomPair();
+// });
+// document.getElementById('p2').addEventListener('click', function(){
+//   console.log("Clicked P2");
+//   scoreWinner();    
+//   randomPair();
+// });
+document.getElementById('twopics').addEventListener('click',whichClicked);
 
+let iAmClicked = '';
+function whichClicked (e) {
+  let clicked = e.target.parentNode;
+  console.log(clicked);
+  if ( clicked.id === 'p1') {
+    console.log("clicked is", unPick[0]);
+    console.log(focusAreas[unPick[0]].label)
+    randomPair();
+  } else { 
+    console.log("clicked is", unPick[1]);
+    console.log(focusAreas[unPick[1]].label)
+    randomPair();
+  }
+
+}
+
+// get the clicked winner, increase it's score, get a new pair
+// after that, try to record it's opponent as well.
+function scoreWinner () {
+  let winnerA = document.getElementById('p1').getAttribute('data-unId');
+  let winnerB = document.getElementById('p2').getAttribute('data-unId');
+  console.log("winner is", winnerA);
+  console.log("the unPick is", unPick);
+}
 
 let counter = 0;
 
@@ -57,7 +96,7 @@ function getRandomIntInclusive(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-  
+// this function takes the two selected object keys from randomPair() and displays .image property  
 function pickUN (a,b) {
   //show image a
   //add event listener
@@ -66,92 +105,36 @@ function pickUN (a,b) {
   //for clicked imaged score +1
   //on click a is recorded in b 'pairs' and b is recorded in a 'pairs'
   //
-
   document.getElementById('p1').innerHTML = `<img src=${a.image}>`;
   document.getElementById('p2').innerHTML = `<img src=${b.image}>`;
+  document.getElementById('p1').setAttribute('data-unId', a.slug);
+  document.getElementById('p2').setAttribute('data-unId', b.slug);
 
 };
 
-
-
-const testPair = {
-  0: [ `${un3.image}`, `${un4.image}` ],
-  1: [ un3, un6 ],
-  2: [ un3, un7 ]
-}
-
-//let [a,b] = [pairs[0], pairs[1]];
-// let a = testPair[1][0];
-// let b = testPair[1][1];
-  
-// pickUN(a,b);
-
-// when a choice is clicked the loop stores info and picks another pair to display.
-// see how to save info to a file (modify the object in the file)
-// so the current state of a picked item can be displayed
-  
-
-//compare two things and pick winner
-
-let joe = '';
 
 //show the pair from the index entered in the text box
 function getTheUN () {
   let x = document.getElementById('matchPick').value; // the key id of the pair to view
   document.getElementById('showUN').innerHTML = unPairsArray[x];
-  let a = eval(unPairsArray[x][0]);
-  let b = eval(unPairsArray[x][1]);
+  let a = focusAreas[unPairsArray[x][0]];
+  let b = focusAreas[unPairsArray[x][1]];
   pickUN(a,b);
-
 }
 
+let unPick = ''; 
+
+// get a random index from the unPairsArray; get the object key and use to pass to pickUN()
 function randomPair () {
-  const x = getRandomIntInclusive(0,unPairsArray.length);
-  let a = eval(unPairsArray[x][0]);
-  let b = eval(unPairsArray[x][1]);
+  const x = getRandomIntInclusive(0,unPairsArray.length - 1);
+  let a = focusAreas[unPairsArray[x][0]];
+  let b = focusAreas[unPairsArray[x][1]];
+  unPick = unPairsArray[x];
   pickUN(a,b);
-  
+  return unPick;
 }
-
- 
   
 </script>
 <script src="makePairs.js"></script>
 </body>
 </html>
-
-<!--
-
-function changeImage() {
-
-  const images = [
-    `<img src="//placehold.it/100x100">`,
-    `<img src="//placehold.it/200x100">`,
-    `<img src="//placehold.it/300x100">`,
-    `<img src="//placehold.it/400x100">`,
-    `<img src="//placehold.it/500x100">`
-  ];
-  
-  function getRandomIntInclusive(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-  
-  function makeImageVariable(x){
-    const imgVar = images[x];
-    console.log("It's here", imgVar);
-    image.innerHTML = `${imgVar}`;
-  }
-
-  const image = document.getElementById('image');
-  const x = getRandomIntInclusive(1,5);
-  makeImageVariable(x);
-}
-
-
-document.getElementById('myButton')
-  .addEventListener('click', changeImage);
-
-
--->

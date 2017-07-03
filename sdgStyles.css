@@ -16,4 +16,16 @@
   width: 60%;
   padding: 40px;
   float: left;
+  /*border: solid black 5px;*/
 }
+
+footer {
+  padding: 20px;
+}
+
+#p1, #p2 {
+  height: 155px;
+  width: 155px;
+  /*border: 5px solid black;*/
+}
+

@@ -26,7 +26,8 @@ var pairArray = (arr) => {
       : myPairs;
 }
 
-var unSet = ["un1", "un2", "un3", "un4", "un5", "un6","un7","un8","un9","un10","un11","un12","un13","un14","un15","un16","un17"];
+// taking UN17-partnerships out of the list for now; consider adding various subsets or non-sdg goals
+var unSet = ["un1", "un2", "un3", "un4", "un5", "un6","un7","un8","un9","un10","un11","un12","un13","un14","un15","un16"];
 
 var unPairsArray = [];
 // pairArray( makePairs )
