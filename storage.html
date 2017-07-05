@@ -8,6 +8,8 @@
 <body>
   <button id="storeFocusAreas">Reset FocusArea Scores</button>
   <button id="pairs">Get Pairs</button>
+  <button id="getSomeJSON">get JSON</button>
+  <button id="initializeFocusAreas">Setup Focus Areas</button>
   <input id="matchPick" type="text" value=""></input>
   <p id='showUN'></p>
   <p id='showCount'>0</p>
@@ -31,7 +33,18 @@ document.getElementById('storeFocusAreas').addEventListener('click', resetScores
 document.getElementById('pairs').addEventListener('click', randomPair);
 document.getElementById('matchPick').addEventListener('keyup', function (e) { 
   if ( e.which===13 ) { getTheUN(); }});
-document.getElementById('twopics').addEventListener('click',whichClicked);
+document.getElementById('twopics').addEventListener('click',winner);
+document.getElementById('getSomeJSON').addEventListener('click', getJSON);
+document.getElementById('initializeFocusAreas').addEventListener('click', convertFocusAreasToJSON);
+
+
+
+// function to turn unObjects.js focusAreas into JSON
+function convertFocusAreasToJSON () {
+  let focusAreasJSON = JSON.stringify(focusAreas);
+  localStorage.setItem('focusAreasJSON', focusAreasJSON);
+  console.log(focusAreasJSON);
+}
 
 // Store focusAreas to localStorage with a 0 score  **explore indexeddb and websql**
 
@@ -46,6 +59,23 @@ function resetScores () {
 }
 
 
+// try using JSON and saving JSON to localstorage.
+
+const matchJSON = {
+  "un1":[],
+  "un2":[],
+  "un3":[]
+}
+
+function getJSON () {
+  let kent = JSON.parse(localStorage.getItem('bobby'));
+  console.log(kent.un2);
+}
+
+
+let theMatches = [];
+
+
 
 
 
@@ -54,12 +84,26 @@ function resetScores () {
 // and maybe store the pair it beat. Need to decide storage method. Maybe mongodb. Maybe node.js. Maybe firebase.
 
 let iAmClicked = '';
-function whichClicked (e) {
+//JSON version of function;
+function winner (e) {
   let clicked = e.target.parentNode;
+  let matchState = JSON.parse(localStorage.getItem('focusAreasJSON'));
+  
+  function recordMatch (a,b) {
+    matchState[unPick[a]].pairs.push(unPick[b]);
+    console.log(matchState[unPick[a]].pairs);
+    console.log(`the score of ${unPick[a]} is ${matchState[unPick[a]].score}`);
+  }
+  
   if ( clicked.id === 'p1') {
-    let p1score = localStorage.getItem(unPick[0]);
-    p1score++;
-    localStorage.setItem(unPick[0], p1score )
+    let a = 0; let b = 1; //index of pairs in id=p1 and id=p2
+    let p1score = matchState[unPick[a]].score;
+    console.log('score is: ', p1score);
+    p1score = p1score + 1;
+    console.log('now score is', p1score);
+    matchState[unPick[a]].score = p1score;
+    recordMatch(a,b);
+    localStorage.setItem('focusAreasJSON', JSON.stringify(matchState));
     randomPair();
   } else { 
     let p2score = localStorage.getItem(unPick[1]);
@@ -68,6 +112,22 @@ function whichClicked (e) {
     randomPair();
   }
 }
+//localStorage non-JSON version (each un# has it's own spot in localStorage)
+// function winner (e) {
+//   let clicked = e.target.parentNode;
+//   if ( clicked.id === 'p1') {
+//     let p1score = localStorage.getItem(unPick[0]);
+//     p1score++;
+//     localStorage.setItem(unPick[0], p1score )
+//     recordMatch();
+//     randomPair();
+//   } else { 
+//     let p2score = localStorage.getItem(unPick[1]);
+//     p2score++;
+//     localStorage.setItem(unPick[1], p2score )
+//     randomPair();
+//   }
+// }
 
 // get a random integer in a range
 function getRandomIntInclusive(min, max) {
