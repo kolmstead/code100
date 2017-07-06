@@ -77,14 +77,14 @@ let theMatches = [];
 
 
 
-
+//********************** for July 5 get id=p2 to score and record pairs also************
 
 // iAmClicked adds a score of 1 to the clicked item
 // need to work on scoring methods and algorithm. start by being able to keep score of what is picked
 // and maybe store the pair it beat. Need to decide storage method. Maybe mongodb. Maybe node.js. Maybe firebase.
 
 let iAmClicked = '';
-//JSON version of function;
+//JSON version of function; // need to modify scoring once randomPair() is replaced with createPair() - to accelerate score if winner has beat a previous match of loser
 function winner (e) {
   let clicked = e.target.parentNode;
   let matchState = JSON.parse(localStorage.getItem('focusAreasJSON'));
@@ -106,9 +106,15 @@ function winner (e) {
     localStorage.setItem('focusAreasJSON', JSON.stringify(matchState));
     randomPair();
   } else { 
-    let p2score = localStorage.getItem(unPick[1]);
-    p2score++;
-    localStorage.setItem(unPick[1], p2score )
+    let a = 1; let b = 0; //index of pairs in id=p1 and id=p2
+    let p2score = matchState[unPick[a]].score;
+    console.log('score is: ', p2score);
+    p2score = p2score + 1;
+    console.log('now score is', p2score);
+    matchState[unPick[a]].score = p2score;
+    recordMatch(a,b);
+    localStorage.setItem('focusAreasJSON', JSON.stringify(matchState));
+
     randomPair();
   }
 }
@@ -165,6 +171,31 @@ function randomPair () {
   pickUN(a,b);
   return unPick;
 }
+
+// replace randomPair() with a random pick and then a selected pair based on previous matches, victories, etc.
+// can get to an item in the focusAreasJSON in localStorage with Object.keys(JSON.parse(localStorage.getItem('focusAreasJSON')))[7];
+//pseudo code
+// for p1 get a random number between 1 & 16 -1 (for 0 index)
+// for p2 get a second random number <> to the first
+// check p1 'pairs' list for prior matches if p2 is not on the list then show the pairs for scoring
+// if p2 is on the list, get another random number until it's new pair
+function createPair () {
+  if (!localStorage.getItem('focusAreasJSON')) { convertFocusAreasToJSON(); }; // check that JSON object for focusAreas exists & create if no.
+  let areaList = Object.keys(JSON.parse(localStorage.getItem('focusAreasJSON'))); //get number of focus areas by length of object
+  //pick a p1
+  const x = getRandomIntInclusive(0, areaList.length - 1 ); // get a random number to pick p1
+  let focusAreaDetails = JSON.parse(localStorage.getItem('focusAreasJSON'));
+  let p1 = focusAreaDetails[areaList[x]].image;
+  document.getElementById('p1').innerHTML = `<img src=${focusAreaDetails[areaList[x]].image}>`;
+  // get a random number to pick p2, make sure it's not same as p1
+  const y = getRandomIntInclusive(0, areaList.length - 1 ); 
+  if (y === x) { 
+    getRandomIntInclusive(0, areaList.length - 1 ); 
+  } else {
+    let p2 = focusAreaDetails[areaList[y]].image;
+  document.getElementById('p2').innerHTML = `<img src=${focusAreaDetails[areaList[y]].image}>`;
+  } 
+} // need to figure out how to record the pairing to pass along to scoring
   
 </script>
 <script src="makePairs.js"></script>
