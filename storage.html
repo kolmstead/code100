@@ -6,15 +6,8 @@
 <link rel="stylesheet" text="text/css" href="sdgStyles.css" />
 </head>
 <body>
-  <button id="storeFocusAreas">Reset FocusArea Scores</button>
-  <button id="pairs">Get Pairs</button>
-  <button id="getSomeJSON">get JSON</button>
-  <button id="initializeFocusAreas">Setup Focus Areas</button>
-  <input id="matchPick" type="text" value=""></input>
-  <p id='showUN'></p>
-  <p id='showCount'>0</p>
-  <div id="left">
-  </div>
+  <div id="left"></div>
+  
   <div id="miniHeader"><img src="UNimages/un17banner.png" height="70px"></div>
 
   <div id="twopics">
@@ -29,111 +22,49 @@
 <script src="makePairs.js"></script>  
 <script>
 
-document.getElementById('storeFocusAreas').addEventListener('click', resetScores);
-document.getElementById('pairs').addEventListener('click', randomPair);
-document.getElementById('matchPick').addEventListener('keyup', function (e) { 
-  if ( e.which===13 ) { getTheUN(); }});
 document.getElementById('twopics').addEventListener('click',winner);
-document.getElementById('getSomeJSON').addEventListener('click', getJSON);
-document.getElementById('initializeFocusAreas').addEventListener('click', convertFocusAreasToJSON);
-
 
 
 // function to turn unObjects.js focusAreas into JSON
 function convertFocusAreasToJSON () {
   let focusAreasJSON = JSON.stringify(focusAreas);
   localStorage.setItem('focusAreasJSON', focusAreasJSON);
-  console.log(focusAreasJSON);
-}
-
-// Store focusAreas to localStorage with a 0 score  **explore indexeddb and websql**
-
-let theScores = [["un1", 0],["un2", 0],["un3", 0],["un4",0],["un5",0],["un6",0],["un7",0],["un8",0],["un9",0],["un10",0],["un11",0],["un12",0],["un13",0],["un14",0],["un15",0],["un16",0]];
-
-function resetScores () {
-  for (i=0; i<theScores.length; i++) {
-    if (!localStorage.getItem(theScores[i][0])) {
-      localStorage.setItem(theScores[i][0],0);
-    } localStorage.setItem(theScores[i][0],0);
-  }  
 }
 
 
-// try using JSON and saving JSON to localstorage.
-
-const matchJSON = {
-  "un1":[],
-  "un2":[],
-  "un3":[]
-}
-
-function getJSON () {
-  let kent = JSON.parse(localStorage.getItem('bobby'));
-  console.log(kent.un2);
-}
-
-
-let theMatches = [];
-
-
-
-//********************** for July 5 get id=p2 to score and record pairs also************
-
-// iAmClicked adds a score of 1 to the clicked item
+// function winner() adds score to the clicked item, stores other info, and gets a new pair
 // need to work on scoring methods and algorithm. start by being able to keep score of what is picked
 // and maybe store the pair it beat. Need to decide storage method. Maybe mongodb. Maybe node.js. Maybe firebase.
 
 let iAmClicked = '';
-//JSON version of function; // need to modify scoring once randomPair() is replaced with createPair() - to accelerate score if winner has beat a previous match of loser
+
 function winner (e) {
   let clicked = e.target.parentNode;
   let matchState = JSON.parse(localStorage.getItem('focusAreasJSON'));
   
   function recordMatch (a,b) {
     matchState[unPick[a]].pairs.push(unPick[b]);
-    console.log(matchState[unPick[a]].pairs);
-    console.log(`the score of ${unPick[a]} is ${matchState[unPick[a]].score}`);
   }
   
   if ( clicked.id === 'p1') {
     let a = 0; let b = 1; //index of pairs in id=p1 and id=p2
     let p1score = matchState[unPick[a]].score;
-    console.log('score is: ', p1score);
     p1score = p1score + 1;
-    console.log('now score is', p1score);
     matchState[unPick[a]].score = p1score;
     recordMatch(a,b);
     localStorage.setItem('focusAreasJSON', JSON.stringify(matchState));
-    randomPair();
+    createPair();
   } else { 
     let a = 1; let b = 0; //index of pairs in id=p1 and id=p2
     let p2score = matchState[unPick[a]].score;
-    console.log('score is: ', p2score);
     p2score = p2score + 1;
-    console.log('now score is', p2score);
     matchState[unPick[a]].score = p2score;
     recordMatch(a,b);
     localStorage.setItem('focusAreasJSON', JSON.stringify(matchState));
-
-    randomPair();
+    createPair();
   }
 }
-//localStorage non-JSON version (each un# has it's own spot in localStorage)
-// function winner (e) {
-//   let clicked = e.target.parentNode;
-//   if ( clicked.id === 'p1') {
-//     let p1score = localStorage.getItem(unPick[0]);
-//     p1score++;
-//     localStorage.setItem(unPick[0], p1score )
-//     recordMatch();
-//     randomPair();
-//   } else { 
-//     let p2score = localStorage.getItem(unPick[1]);
-//     p2score++;
-//     localStorage.setItem(unPick[1], p2score )
-//     randomPair();
-//   }
-// }
+
 
 // get a random integer in a range
 function getRandomIntInclusive(min, max) {
@@ -142,62 +73,41 @@ function getRandomIntInclusive(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// this function takes the two selected object keys from randomPair() and displays .image property  
-function pickUN (a,b) {
-  document.getElementById('p1').innerHTML = `<img src=${a.image}>`;
-  document.getElementById('p2').innerHTML = `<img src=${b.image}>`;
-  document.getElementById('p1').setAttribute('data-unId', a.slug); //check if this attribute is being used
-  document.getElementById('p2').setAttribute('data-unId', b.slug); //check if this attribute is being used
-};
-
-
-//show the pair from the index entered in the text box
-function getTheUN () {
-  let x = document.getElementById('matchPick').value; // the key id of the pair to view
-  document.getElementById('showUN').innerHTML = unPairsArray[x];
-  let a = focusAreas[unPairsArray[x][0]];
-  let b = focusAreas[unPairsArray[x][1]];
-  pickUN(a,b);
-}
 
 let unPick = ''; 
 
-// get a random index from the unPairsArray; get the object key and use to pass to pickUN()
-function randomPair () {
-  const x = getRandomIntInclusive(0,unPairsArray.length - 1);
-  let a = focusAreas[unPairsArray[x][0]];
-  let b = focusAreas[unPairsArray[x][1]];
-  unPick = unPairsArray[x];
-  pickUN(a,b);
-  return unPick;
-}
-
-// replace randomPair() with a random pick and then a selected pair based on previous matches, victories, etc.
-// can get to an item in the focusAreasJSON in localStorage with Object.keys(JSON.parse(localStorage.getItem('focusAreasJSON')))[7];
-//pseudo code
-// for p1 get a random number between 1 & 16 -1 (for 0 index)
-// for p2 get a second random number <> to the first
-// check p1 'pairs' list for prior matches if p2 is not on the list then show the pairs for scoring
-// if p2 is on the list, get another random number until it's new pair
+// create a pair of SDGs to chose a winner from
 function createPair () {
   if (!localStorage.getItem('focusAreasJSON')) { convertFocusAreasToJSON(); }; // check that JSON object for focusAreas exists & create if no.
   let areaList = Object.keys(JSON.parse(localStorage.getItem('focusAreasJSON'))); //get number of focus areas by length of object
   //pick a p1
   const x = getRandomIntInclusive(0, areaList.length - 1 ); // get a random number to pick p1
   let focusAreaDetails = JSON.parse(localStorage.getItem('focusAreasJSON'));
-  let p1 = focusAreaDetails[areaList[x]].image;
-  document.getElementById('p1').innerHTML = `<img src=${focusAreaDetails[areaList[x]].image}>`;
+  let p1 = focusAreaDetails[areaList[x]];
+  let p2 = '';
+  document.getElementById('p1').innerHTML = `<img src=${p1.image}>`;
   // get a random number to pick p2, make sure it's not same as p1
   const y = getRandomIntInclusive(0, areaList.length - 1 ); 
   if (y === x) { 
     getRandomIntInclusive(0, areaList.length - 1 ); 
   } else {
-    let p2 = focusAreaDetails[areaList[y]].image;
-  document.getElementById('p2').innerHTML = `<img src=${focusAreaDetails[areaList[y]].image}>`;
-  } 
-} // need to figure out how to record the pairing to pass along to scoring
+    let p2 = focusAreaDetails[areaList[y]];
+    document.getElementById('p2').innerHTML = `<img src=${p2.image}>`;
+    unPick = [];
+    unPick.push(p1.slug, p2.slug);
+    return unPick;
+  }
+}
+
+createPair(); // this initializes the web page with a pair to pick from
+
+//Next stuff:
+//maybe show the images together after they are selected - vs in the picking function
+//check for a previous pairing - check for y===x || y in x.pairs yes to either get another
+//add an x button to exclude certain goals from future pairings
+//show a description of the goal to it's right (and put the x for delete there)
+//get a code review for optimization ideas.
   
 </script>
-<script src="makePairs.js"></script>
 </body>
 </html>
