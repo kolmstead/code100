@@ -31,6 +31,17 @@ function convertFocusAreasToJSON () {
   localStorage.setItem('focusAreasJSON', focusAreasJSON);
 }
 
+// create location to store not-interested-in-these-goals right now list
+function considerLater (e) {
+  if (!localStorage.getItem('considerLater')) {
+  const considerLaterList = [];
+  localStorage.setItem('considerLater', JSON.stringify(considerLaterList) );
+  // let clicked = e.target;
+  // console.log("clicked is", clicked);
+  // console.log("Did this get clicked?");
+  }
+}
+
 
 // function winner() adds score to the clicked item, stores other info, and gets a new pair
 // need to work on scoring methods and algorithm. start by being able to keep score of what is picked
@@ -73,30 +84,65 @@ function getRandomIntInclusive(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-
 let unPick = ''; 
 
 // create a pair of SDGs to chose a winner from
 function createPair () {
+  
+  //try to make a function that adds a clicked 'x' slug to the considerLater array
+  function addToLater(x){
+    console.log("add this to later:", x);
+  }
+  
   if (!localStorage.getItem('focusAreasJSON')) { convertFocusAreasToJSON(); }; // check that JSON object for focusAreas exists & create if no.
   let areaList = Object.keys(JSON.parse(localStorage.getItem('focusAreasJSON'))); //get number of focus areas by length of object
-  //pick a p1
-  const x = getRandomIntInclusive(0, areaList.length - 1 ); // get a random number to pick p1
-  let focusAreaDetails = JSON.parse(localStorage.getItem('focusAreasJSON'));
+    console.log("AreaList is", areaList);
+  let x = getRandomIntInclusive(0, areaList.length - 1 ); // get a random number to pick p1
+  let focusAreaDetails = JSON.parse(localStorage.getItem('focusAreasJSON')); //returns object with all details
+    console.log("focusAreaDetails are", focusAreaDetails);
   let p1 = focusAreaDetails[areaList[x]];
-  let p2 = '';
-  document.getElementById('p1').innerHTML = `<img src=${p1.image}>`;
+    console.log("p1 is", p1);
+    if (JSON.parse(localStorage.getItem('considerLater')).includes(p1.slug)) {
+      console.log("don't use", p1.slug,  "and get another.");
+      
+      
+    }
+
+  document.getElementById('p1').innerHTML = `<img src=${p1.image}><p id="p1x">x</p>`;
+  document.getElementById('p1x').addEventListener('click', function(e){
+    let considerLater = JSON.parse(localStorage.getItem('considerLater'));
+      console.log("is this an array", considerLater);
+    let slug = p1.slug;
+    console.log("did I get p1slug?", slug);
+    e.stopPropagation();
+    considerLater.push(slug);
+    console.log("Did array change?", considerLater);
+    localStorage.setItem('considerLater', JSON.stringify(considerLater));
+  });
   // get a random number to pick p2, make sure it's not same as p1
-  const y = getRandomIntInclusive(0, areaList.length - 1 ); 
-  if (y === x) { 
-    getRandomIntInclusive(0, areaList.length - 1 ); 
+  let p2 = '';
+  
+  const y = getRandomIntInclusive(0, areaList.length - 1 );
+  let z = focusAreaDetails[areaList[x]].pairs.includes(focusAreaDetails[areaList[y]].slug);
+  if (y === x || z === p1) { 
+    getRandomIntInclusive(0, areaList.length - 1 );
+    console.log("oops");    
   } else {
     let p2 = focusAreaDetails[areaList[y]];
-    document.getElementById('p2').innerHTML = `<img src=${p2.image}>`;
+    document.getElementById('p2').innerHTML = `<img src=${p2.image}><p id="p2x">x</p>`;
+    document.getElementById('p2x').addEventListener('click', bailOnThis);
+
     unPick = [];
     unPick.push(p1.slug, p2.slug);
     return unPick;
   }
+}
+
+function bailOnThis(e) {
+  let clicked = e.target.id;
+  console.log(clicked);
+  console.log("Get me out of here");
+  e.stopPropagation();
 }
 
 createPair(); // this initializes the web page with a pair to pick from
