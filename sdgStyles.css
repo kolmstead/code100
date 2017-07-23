@@ -1,48 +1,72 @@
-#left {
-  width: 20%;
-  float: left;
-  height: 80%;
-  visibility: hidden;
+body {
+  font-family: Arial, sans-serif;
 }
 
-#right {
-  width: 20%;
-  float: right;
-  visibility: hidden;
+h4 {
+  font-family: Arial, sans-serif;
+  font-size: .9em;
+  margin-top: .4em;
+  margin-bottom: .1em;
 }
+
+p {
+  font-family: Arial, sans-serif;
+  font-size: .75em;
+  margin-top: .5em;
+  margin-bottom: 0em;
+}
+
 #twopics {
   display: flex;
   flex-direction: column;
-  width: 60%;
-  padding: 40px;
-  float: left;
-  /*border: solid black 5px;*/
-}
-
-footer {
-  padding: 20px;
+  justify-content: flex-start;
+  align-items: center;
+  width: 500px;
 }
 
 #p1, #p2 {
-  position: relative;
-  height: 155px;
-  width: 155px;
-  z-index: 1;
-  /*border: 5px solid black;*/
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  background-color: #eed;
+  padding: 5px;
 }
 
-#p1x, #p2x {
-  font: 1em bold, Arial, sans-serif;
-  color: #263238;
-  position: absolute;
-  top: 100px;
-  right: 14px;
+
+img  {
+  justify-content: center;
+  align-self: flex-start;
+}
+
+#info1, 
+#info2  {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-left: 5px;
+  margin-bottom: 0px;
+
+
+}
+
+
+#p1 > #p1x, 
+#p2 > #p2x {
+  align-self: flex-end;
+  order: 3;
   border: 3px solid #37474f;
   background-color: #cfd8dc;
   border-radius: 18px;
   width: 18px;
   height: 18px;
   text-align: center;
-  z-index: 3;
 }
+
+.material-icons {
+  align-self: flex-end;
+}
+
+
+
 

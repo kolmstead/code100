@@ -3,12 +3,11 @@
 <head>
 <title>storage</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" text="text/css" href="sdgStyles.css" />
 </head>
 <body>
   <button id="spin">Spin</button>
-  <div id="show"></div>
-  <div id="left"></div>
   
   <div id="miniHeader"><img src="UNimages/un17banner.png" height="70px"></div>
 
@@ -16,8 +15,6 @@
     <div id='p1'><img src="//placehold.it/150x150"></div>
     <div id='p2'><img src="//placehold.it/150x150"></div>
   </div>
-
-  <div id="right">right</div>
 
 
 <script src="unObjects.js"></script>
@@ -96,10 +93,13 @@ const considerLater = JSON.parse(localStorage.getItem('considerLater'));
   //this is to eliminate certain sdgs from the contest; adds things to considerLater array
         let bailOnThis = slug => e => {
           let considerLater = JSON.parse(localStorage.getItem('considerLater'));
-          console.log("which slug did I get?", slug);
           e.stopPropagation();
           considerLater.push(slug);
+          unPick = new Set(unPick);
+          unPick.delete(slug);
+          unPick = [...unPick];
           localStorage.setItem('considerLater', JSON.stringify(considerLater));
+          createPair();
         }  
 
   
@@ -111,7 +111,6 @@ const considerLater = JSON.parse(localStorage.getItem('considerLater'));
     function pickRandom() {
       let pick = focusAreaDetails[areaList[getRandom(0, areaList.length - 1)]].slug;
       if ( considerLater.includes(pick) || unPick.includes(pick)) {
-        console.log("pick is in considerLater or unPick", pick);
         return pickRandom();
       } else {
         unPick.push(pick);
@@ -124,87 +123,26 @@ const considerLater = JSON.parse(localStorage.getItem('considerLater'));
   for (i=0; i<2; i++) {
     pickRandom();
   }
-  document.getElementById('show').innerHTML = `Final Pair is: ${unPick}`;
 
 
 //event listeners to show images and x's to add things to considerLater list
-  document.getElementById('p1').innerHTML = `<img src=${focusAreaDetails[unPick[0]].image}><p id="p1x">x</p>`;
+  document.getElementById('p1').innerHTML = `<img id="p1img" src=${focusAreaDetails[unPick[0]].image}><div id="info1">${focusAreaDetails[unPick[0]].info}<i class="material-icons" id="p1x">highlight_off</i></div>`;
   document.getElementById('p1x').addEventListener('click', bailOnThis(focusAreaDetails[unPick[0]].slug));
-  document.getElementById('p2').innerHTML = `<img src=${focusAreaDetails[unPick[1]].image}><p id="p2x">x</p>`;
+  document.getElementById('p2').innerHTML = `<img id="p2img" src=${focusAreaDetails[unPick[1]].image}><div id="info2">${focusAreaDetails[unPick[1]].info}<i class="material-icons" id="p2x">highlight_off</i></div>`;
   document.getElementById('p2x').addEventListener('click', bailOnThis(focusAreaDetails[unPick[1]].slug));
 
-
-
-
-
-
-
-
-
-// try to make a get p1 function
-// let candidate be null
-// then get a random number to get a candidate
-// test if it's on the do not use list
-// if it is, then get another random number and candidate and test again
-//   let p1 = null; 
-//   function getCandidate () {
-//     let candidate = null;
-//     if (candidate === null) {
-//       let x = getRandomIntInclusive(0, areaList.length - 1 );
-//       let candidate = focusAreaDetails[areaList[x]];
-//       if (JSON.parse(localStorage.getItem('considerLater')).includes(candidate.slug)){
-//         candidate = null;
-//       } else {
-//         candidate = focusAreaDetails[areaList[x]];
-//         let p1 = candidate;
-//         console.log("p1 & candidate is", p1);
-//       }
-//     }
-//   }
-
-// getCandidate();
-//   // let x = getRandomIntInclusive(0, areaList.length - 1 ); // get a random number to pick p1
-
-//   // let p1 = focusAreaDetails[areaList[x]];
-//   //   console.log("p1 is", p1);
-//   //   if (JSON.parse(localStorage.getItem('considerLater')).includes(p1.slug)) {
-//   //     console.log("don't use", p1.slug,  "and get another.");
-      
-      
-//   //   }
-
-//   document.getElementById('p1').innerHTML = `<img src=${p1.image}><p id="p1x">x</p>`;
-//   document.getElementById('p1x').addEventListener('click', bailOnThis(p1.slug));
-
-//   // get a random number to pick p2, make sure it's not same as p1
-//   let p2 = '';
-  
-//   const y = getRandomIntInclusive(0, areaList.length - 1 );
-//   let z = focusAreaDetails[areaList[x]].pairs.includes(focusAreaDetails[areaList[y]].slug);
-//   if (y === x || z === p1) { 
-//     getRandomIntInclusive(0, areaList.length - 1 );
-//     console.log("oops");    
-//   } else {
-//     let p2 = focusAreaDetails[areaList[y]];
-//     document.getElementById('p2').innerHTML = `<img src=${p2.image}><p id="p2x">x</p>`;
-//     document.getElementById('p2x').addEventListener('click', bailOnThis(p2.slug));
-
-//     unPick = [];
-//     unPick.push(p1.slug, p2.slug);
-//     return unPick;
-//   }
 }
 
 
 createPair(); // this initializes the web page with a pair to pick from
 
-//Next stuff:
-//maybe show the images together after they are selected - vs in the picking function
-//check for a previous pairing - check for y===x || y in x.pairs yes to either get another
-//add an x button to exclude certain goals from future pairings
-//show a description of the goal to it's right (and put the x for delete there)
-//get a code review for optimization ideas.
-  
+// add links to un sdg sites for more info or actions
+// add a link to play a video
+// add credits for the app and un site
+// make a function to just replace a single sdg when putting one on considerLater
+// test in mobile phone
+// find out about pwa without framework (can you?)
+
 </script>
 </body>
 </html>
