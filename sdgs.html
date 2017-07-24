@@ -1,13 +1,13 @@
 <!doctype html>
 <html>
 <head>
-<title>storage</title>
+<title>UN SDGs</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" text="text/css" href="sdgStyles.css" />
 </head>
 <body>
-  <button id="spin">Spin</button>
+
   
   <div id="miniHeader"><img src="UNimages/un17banner.png" height="70px"></div>
 
@@ -16,6 +16,7 @@
     <div id='p2'><img src="//placehold.it/150x150"></div>
   </div>
 
+  <button id="spin">Spin</button>
 
 <script src="unObjects.js"></script>
 <script src="makePairs.js"></script>  
@@ -31,16 +32,18 @@ function convertFocusAreasToJSON () {
   localStorage.setItem('focusAreasJSON', focusAreasJSON);
 }
 
+// function to create considerLater empty array if it doesn't exist
+// function createConsiderLater () {
+//   if (!localStorage.getItem('considerLater')) { considerLater(e); };
+// createConsiderLater();
+
 // create location to store not-interested-in-these-goals right now list
-function considerLater (e) {
+(function considerLater (e) {
   if (!localStorage.getItem('considerLater')) {
-  const considerLaterList = [];
-  localStorage.setItem('considerLater', JSON.stringify(considerLaterList) );
-  // let clicked = e.target;
-  // console.log("clicked is", clicked);
-  // console.log("Did this get clicked?");
+  const considerLater = [];
+  localStorage.setItem('considerLater', JSON.stringify(considerLater) );
   }
-}
+})();
 
 
 // function winner() adds score to the clicked item, stores other info, and gets a new pair
@@ -95,11 +98,24 @@ const considerLater = JSON.parse(localStorage.getItem('considerLater'));
           let considerLater = JSON.parse(localStorage.getItem('considerLater'));
           e.stopPropagation();
           considerLater.push(slug);
+          let indexOfConsiderLater = unPick.indexOf(slug);
+          console.log("index is", indexOfConsiderLater);
           unPick = new Set(unPick);
           unPick.delete(slug);
           unPick = [...unPick];
           localStorage.setItem('considerLater', JSON.stringify(considerLater));
-          createPair();
+          pickRandom();
+          console.log("new unPick", unPick);
+          if (indexOfConsiderLater === 0) {
+            unPick = unPick.reverse();
+              document.getElementById('p1').innerHTML = `<img id="p1img" src=${focusAreaDetails[unPick[0]].image}><div id="info1">${focusAreaDetails[unPick[0]].info}<i class="material-icons" id="p1x">highlight_off</i></div>`;
+              document.getElementById('p1x').addEventListener('click', bailOnThis(focusAreaDetails[unPick[0]].slug));
+            return unPick;
+          } else {
+              document.getElementById('p2').innerHTML = `<img id="p2img" src=${focusAreaDetails[unPick[1]].image}><div id="info2">${focusAreaDetails[unPick[1]].info}<i class="material-icons" id="p2x">highlight_off</i></div>`;
+              document.getElementById('p2x').addEventListener('click', bailOnThis(focusAreaDetails[unPick[1]].slug));            
+            return unPick;
+          }
         }  
 
   
@@ -142,6 +158,11 @@ createPair(); // this initializes the web page with a pair to pick from
 // make a function to just replace a single sdg when putting one on considerLater
 // test in mobile phone
 // find out about pwa without framework (can you?)
+// add arrow icon or other icon to get a new pair of sdgs
+// add some instructions, including tool-tip hoover info
+// consider doing images as a sprite sheet
+// define layout for showing top 3 picks in order
+// function to remove an sdg from considerLater
 
 </script>
 </body>
