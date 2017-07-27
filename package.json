@@ -1,20 +1,25 @@
 {
   "name": "code100",
   "version": "1.0.0",
-  "description": "",
-  "main": "sdgs.html",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kolmstead/code100.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Kent Olmstead",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/kolmstead/code100/issues"
   },
-  "homepage": "https://github.com/kolmstead/code100#readme"
+  "homepage": "https://github.com/kolmstead/code100#readme",
+  "dependencies": {
+    "express": "^4.15.3"
+  },
+  "devDependencies": {},
+  "description": ""
 }
