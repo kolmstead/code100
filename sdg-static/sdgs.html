@@ -17,6 +17,7 @@
   </div>
 
   <button id="spin">Spin</button>
+  <button id="showTopFive">Top Five</button>
   <div id="top5"></div>
 
 <script src="unObjects.js"></script>
@@ -26,6 +27,7 @@
 
 document.getElementById('twopics').addEventListener('click',winner);
 document.getElementById('spin').addEventListener('click', createPair);
+document.getElementById('showTopFive').addEventListener('click', showTopFive);
 
 
 // function to turn unObjects.js focusAreas into JSON
@@ -70,6 +72,7 @@ function winner (e) {
     recordMatch(a,b);
     localStorage.setItem('focusAreasJSON', JSON.stringify(matchState));
     createPair();
+    showTopFive();
   } else { 
     let a = 1; let b = 0; //index of pairs in id=p1 and id=p2
     let p2score = matchState[unPick[a]].score;
@@ -78,6 +81,7 @@ function winner (e) {
     recordMatch(a,b);
     localStorage.setItem('focusAreasJSON', JSON.stringify(matchState));
     createPair();
+    showTopFive();
   }
 }
 

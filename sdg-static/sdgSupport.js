@@ -1,26 +1,33 @@
 let orderList = {};
+let sortedScores = [];
 
-(function showTopFive () {
-  let bob = JSON.parse(localStorage.getItem('focusAreasJSON'));
-  let icy = Object.keys(bob);
-  console.log(bob);
-  console.log(Object.keys(bob).length);
-  console.log(`Score is ${bob[icy[3]].score} for ${bob[icy[3]].slug}: the SDG about ${bob[icy[3]].label}\. `);
-    // let orderList = {};
-    for ( i=0; i<icy.length; i++) {
-      orderList[bob[icy[i]].slug] = bob[icy[i]].score;
-      // orderList.push(bob[icy[i]].slug);
-      // orderList.push(bob[icy[i]].score);
-      // console.log(orderList);
-    } return orderList;
-  // let joe = `Score is ${bob[icy[3]].score} for ${bob[icy[3]].slug}: the SDG about ${bob[icy[3]].label}\. `
-  let joe = "once upon a time in Greenland";
-  document.getElementById('top5').innerHTML = `<h2>Anything?: ${joe}</h2>`;
-})();
+function showTopFive () {
 
-console.log(orderList);
+  function getScores () {
 
-// var jsonObj = {};
-// for(var i=0; i<data.length; i++){
-//     jsonObj[data[i].id] = data[i].name;
-// }
+    let sdgAllProps = JSON.parse(localStorage.getItem('focusAreasJSON'));
+    let scoreProp = Object.keys(sdgAllProps);
+
+      for ( i=0; i<scoreProp.length; i++) {
+        orderList[sdgAllProps[scoreProp[i]].slug] = sdgAllProps[scoreProp[i]].score;
+      } return orderList;
+  }
+
+  function  sortScores() {
+    sortedScores = Object.entries(orderList);
+    sortedScores.sort((x,y) => y[1] - x[1]);
+    return sortedScores;
+  }
+
+getScores();
+sortScores();
+document.getElementById('top5').innerHTML = 
+  `<ul>
+    <li>${sortedScores[0][0]} score is ${sortedScores[0][1]}</li>
+    <li>${sortedScores[1][0]} score is ${sortedScores[1][1]}</li>
+    <li>${sortedScores[2][0]} score is ${sortedScores[2][1]}</li>
+    <li>${sortedScores[3][0]} score is ${sortedScores[3][1]}</li>
+    <li>${sortedScores[4][0]} score is ${sortedScores[4][1]}</li>  
+  </ul>`;
+return sortedScores;
+}
