@@ -7,7 +7,7 @@ app.set('port', (process.env.PORT || 5001));
 app.use('/', express.static('sdg-static'))
 
 app.get('/', function (req, res) {
-    res.send('Hello Heroku 2')
+    res.send(`<a href="https://sdgtest.herokuapp.com/sdgs.html">Review UN Sustainagle development goals</a>`)
 })
 
 app.listen(app.get('port'), function() {

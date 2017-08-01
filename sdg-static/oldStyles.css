@@ -1,0 +1,75 @@
+/* the old styles, working on grid now instead of flexbox */
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+h4 {
+  font-family: Arial, sans-serif;
+  font-size: .78em;
+  margin-top: 0em;
+  margin-bottom: .1em;
+}
+
+p {
+  color: #212121;
+  font-family: Arial, sans-serif;
+  font-size: .68em;
+  margin-top: .5em;
+  margin-bottom: 0em;
+}
+
+#twopics {
+  display: block;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  flex-basis: 100%;
+}
+
+#p1, #p2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  background-color: #eed;
+  padding: 5px;
+}
+
+
+img  {
+  justify-content: center;
+  align-self: flex-start;
+}
+
+#info1, 
+#info2  {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-left: 5px;
+  margin-bottom: 0px;
+  flex-basis: 200px;
+  min-width: 100px;
+  flex-shrink: .5;
+
+
+}
+
+
+#p1 > #p1x, 
+#p2 > #p2x {
+  align-self: flex-end;
+  order: 3;
+  border: 3px solid #37474f;
+  background-color: #cfd8dc;
+  border-radius: 18px;
+  width: 18px;
+  height: 18px;
+  text-align: center;
+}
+
+.material-icons {
+  align-self: flex-end;
+}

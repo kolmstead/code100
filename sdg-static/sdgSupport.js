@@ -30,11 +30,11 @@ document.getElementById('top5').innerHTML =
   <img src=${sdgAllProps[sortedScores[3][0]].image} width="70">
   <img src=${sdgAllProps[sortedScores[4][0]].image} width="70">
   <ul>
-    <li><img src=${sdgAllProps[sortedScores[0][0]].image} width="70">${sortedScores[0][0]} score is ${sortedScores[0][1]}</li>
-    <li><img src=${sdgAllProps[sortedScores[1][0]].image} width="70">${sortedScores[1][0]} score is ${sortedScores[1][1]}</li>
-    <li><img src=${sdgAllProps[sortedScores[2][0]].image} width="70">${sortedScores[2][0]} score is ${sortedScores[2][1]}</li>
-    <li><img src=${sdgAllProps[sortedScores[3][0]].image} width="70">${sortedScores[3][0]} score is ${sortedScores[3][1]}</li>
-    <li><img src=${sdgAllProps[sortedScores[4][0]].image} width="70">${sortedScores[4][0]} score is ${sortedScores[4][1]}</li>  
+    <li>${sortedScores[0][0]} score is ${sortedScores[0][1]}</li>
+    <li>${sortedScores[1][0]} score is ${sortedScores[1][1]}</li>
+    <li>${sortedScores[2][0]} score is ${sortedScores[2][1]}</li>
+    <li>${sortedScores[3][0]} score is ${sortedScores[3][1]}</li>
+    <li>${sortedScores[4][0]} score is ${sortedScores[4][1]}</li>  
   </ul>`;
 return sortedScores;
 }
