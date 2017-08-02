@@ -51,6 +51,15 @@ app.get('/', function (req, res) {
   res.sendFile(__dirname + '/sdg-static/sdgs.html');
 })
 
+app.get('/try', function (req, res) {
+  // res.send("am I at try?");
+  res.sendFile(__dirname + '/sdg-static/mongo.html');
+})
+
+app.post('/quotes', (req, res) => {
+  console.log('Hello Try and Qutoes!')
+})
+
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
