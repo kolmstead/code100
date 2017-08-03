@@ -1,8 +1,20 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
 const router = express.Router();
 const mongoose = require('mongoose');
 
+app.use(bodyParser.urlencoded({extended: true}));
+
+const MongoClient = require('mongodb').MongoClient;
+
+MongoClient.connect('mongodb://joe:password@ds161471.mlab.com:61471/dang', (err, database) => {
+  if (err) return console.log(err)
+  db = database
+  app.listen(3000, () => {
+    console.log('listening on 3000')
+  })
+});
 
 // //connect to mlab mongodb via mongoose
 // // mongoose.connect('mongodb://localhost/test');
@@ -56,11 +68,20 @@ app.get('/try', function (req, res) {
   res.sendFile(__dirname + '/sdg-static/mongo.html');
 })
 
+// app.post('/quotes', (req, res) => {
+//   console.log(req.body)
+// })
+
 app.post('/quotes', (req, res) => {
-  console.log('Hello Try and Qutoes!')
+  db.collection('quotes').save(req.body, (err, result) => {
+    if (err) return console.log(err)
+
+    console.log('saved to database')
+    res.redirect('/')
+  })
 })
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
-});
+})
 
