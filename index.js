@@ -81,7 +81,15 @@ app.post('/quotes', (req, res) => {
   })
 })
 
+function saveMongo () {
+  console.log("hello at saveMongo");
+  document.getElementById('hello').innerHTML = 'save to Mongo?';
+  db.collection('bob').save(
+    {"theKey":"theValue"}
+  );
+  console.log("did anything make it?");
+};
+
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 })
-

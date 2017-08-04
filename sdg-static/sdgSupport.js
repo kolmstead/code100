@@ -38,3 +38,16 @@ document.getElementById('top5').innerHTML =
   </ul>`;
 return sortedScores;
 }
+
+// function to reset all scores and considerLater list in localStorage
+function resetAll() {
+  // localStorage.removeItem('focusAreasJSON');
+  considerLater = [];
+  localStorage.setItem('considerLater', JSON.stringify(considerLater));
+  localStorage.removeItem('focusAreasJSON');
+  let focusAreasJSON = JSON.stringify(focusAreas);
+  localStorage.setItem('focusAreasJSON', focusAreasJSON);
+  showTopFive();
+  console.log("scores, matches and considerLater list all reset");
+}
+
