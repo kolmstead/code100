@@ -4,9 +4,37 @@
   <button type="submit">Submit</button>
 </form>
 
+<form action="/joe" method="POST">
+    <input type="text" name="newID" placeholder="Enter your ID"/>
+    <input type="submit" value="Click here to submit the form"/>
+</form>
 
-<!--<form action="/quotes" method="POST">
-  <input type="text" placeholder="name" name="name">
-  <input type="text" placeholder="quote" name="quote">
-  <button type="submit">Submit</button>
-</form>-->
+
+<button id="storeMongo">ToMongo</button>
+<p id="hello"></p>
+<script>
+
+
+// document.getElementById('storeMongo').addEventListener('click', saveMongo);
+let sdgAllProps = JSON.parse(localStorage.getItem('focusAreasJSON'));
+
+// function saveMongo () {
+//   console.log("hello at saveMongo");
+//   document.getElementById('hello').innerHTML = 'save to Mongo?';
+//   db.collection('sdgs').save(
+//     { sdgAllProps }, (err, result) => {
+//       if (err) return console.log(err)
+//       console.log('stuff saved to Mongo')
+//     }
+//   )
+// }
+function trySome() {
+  console.log("Tried Some.");
+  console.log("sdgs?", sdgAllProps);
+}
+
+
+
+
+
+</script>>

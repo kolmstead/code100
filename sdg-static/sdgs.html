@@ -19,6 +19,7 @@
 
   <button id="spin">Spin</button>
   <button id="showTopFive">Top Five</button>
+  <button id="reset">Reset All</button>
   <div id="top5"></div>
 
 </div>
@@ -30,6 +31,7 @@
 document.getElementById('twopics').addEventListener('click',winner);
 document.getElementById('spin').addEventListener('click', createPair);
 document.getElementById('showTopFive').addEventListener('click', showTopFive);
+document.getElementById('reset').addEventListener('click', resetAll);
 
 
 // function to turn unObjects.js focusAreas into JSON
@@ -107,13 +109,12 @@ const considerLater = JSON.parse(localStorage.getItem('considerLater'));
           e.stopPropagation();
           considerLater.push(slug);
           let indexOfConsiderLater = unPick.indexOf(slug);
-          console.log("index is", indexOfConsiderLater);
           unPick = new Set(unPick);
           unPick.delete(slug);
+          console.log(slug, "moved to considerLater list");
           unPick = [...unPick];
           localStorage.setItem('considerLater', JSON.stringify(considerLater));
           pickRandom();
-          console.log("new unPick", unPick);
           if (indexOfConsiderLater === 0) {
             unPick = unPick.reverse();
               document.getElementById('p1').innerHTML = `<img id="p1img" src=${focusAreaDetails[unPick[0]].image}><div id="info1">${focusAreaDetails[unPick[0]].info}</div><i class="material-icons" id="p1x">highlight_off</i>`;
