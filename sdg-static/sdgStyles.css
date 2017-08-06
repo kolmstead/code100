@@ -50,10 +50,10 @@ p {
   grid-row-start: 1;
   grid-row-end: 2;
   display: grid;
-  grid-template-columns: 155px 250px;
+  grid-template-columns: 155px 250px 15px;
   overflow: hidden;
-  max-height: 155px; 
-  max-width: 405px;
+  max-height: 175px; 
+  max-width: 420px;
   background-color: #eed;
 }
 
@@ -63,10 +63,10 @@ p {
   grid-row-start: 2;
   grid-row-end: 3;
   display: grid;
-  grid-template-columns: 155px 250px;
+  grid-template-columns: 155px 250px 15px;
   overflow: hidden;
-  max-height: 155px;
-  max-width: 405px;
+  max-height: 175px;
+  max-width: 420px;
   background-color: #eed;  
 }
 
@@ -91,36 +91,60 @@ p {
   grid-column-start: 2;
   grid-row-start: 1;
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 10px;
 }
 
 #p1x {
+  grid-column: 3/4;
   justify-self: end;
 }
 
 #p2x {
+  grid-column: 3/4;
   justify-self: end;
 }
 
 .material-icons {
 }
 
+#buttons {
+  display: flex;
+  grid-column: 1/3;
+  grid-row: 4;
+}
+
 #spin {
-  grid-row-start: 4;
+  flex-grow: 1;
+  /*grid-row-start: 4;
   grid-column-start: 1;
-  grid-column-end: 2;
+  grid-column-end: 2;*/
 }
 
 #showTopFive {
-  grid-row-start: 4;
+  flex-grow: 1;
+  /*grid-row-start: 4;
   grid-column-start: 2;
-  grid-column-end: 3;
+  grid-column-end: 3;*/
+}
+
+#reset {
+  flex-grow: 1;
 }
 
 #top5 {
   grid-row-start: 5;
   grid-column-start: 1;
   grid-column-end: 4;
+}
+
+#later {
+  grid-row-start: 6;
+  grid-column: 1/4;
+}
+
+#later > p {
+  font-size: 16px;
+  font-color: #212121;
 }
 
 

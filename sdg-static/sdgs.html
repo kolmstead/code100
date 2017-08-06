@@ -17,10 +17,13 @@
     <div id='p2'><img src="//placehold.it/150x150"><div id="info2"></div></div>
   </div>
 
+<div id="buttons">
   <button id="spin">Spin</button>
   <button id="showTopFive">Top Five</button>
   <button id="reset">Reset All</button>
-  <div id="top5"></div>
+</div>
+<div id="top5"></div>
+<div id="later"></div>
 
 </div>
 <script src="unObjects.js"></script>
@@ -53,6 +56,10 @@ function convertFocusAreasToJSON () {
   }
 })();
 
+//load showTopFive and showConsiderLaterList when document loads
+showTopFive();
+showConsiderLaterList();
+
 
 // function winner() adds score to the clicked item, stores other info, and gets a new pair
 // need to work on scoring methods and algorithm. start by being able to keep score of what is picked
@@ -77,6 +84,7 @@ function winner (e) {
     localStorage.setItem('focusAreasJSON', JSON.stringify(matchState));
     createPair();
     showTopFive();
+    showConsiderLaterList();
   } else { 
     let a = 1; let b = 0; //index of pairs in id=p1 and id=p2
     let p2score = matchState[unPick[a]].score;
@@ -86,6 +94,7 @@ function winner (e) {
     localStorage.setItem('focusAreasJSON', JSON.stringify(matchState));
     createPair();
     showTopFive();
+    showConsiderLaterList();
   }
 }
 
@@ -114,6 +123,7 @@ const considerLater = JSON.parse(localStorage.getItem('considerLater'));
           console.log(slug, "moved to considerLater list");
           unPick = [...unPick];
           localStorage.setItem('considerLater', JSON.stringify(considerLater));
+          showConsiderLaterList();
           pickRandom();
           if (indexOfConsiderLater === 0) {
             unPick = unPick.reverse();
@@ -151,9 +161,9 @@ const considerLater = JSON.parse(localStorage.getItem('considerLater'));
 
 
 //event listeners to show images and x's to add things to considerLater list
-  document.getElementById('p1').innerHTML = `<img id="p1img" src=${focusAreaDetails[unPick[0]].image}><div id="info1">${focusAreaDetails[unPick[0]].info}<i class="material-icons" id="p1x">highlight_off</i></div>`;
+  document.getElementById('p1').innerHTML = `<img id="p1img" src=${focusAreaDetails[unPick[0]].image}><div id="info1">${focusAreaDetails[unPick[0]].info}</div><i class="material-icons" id="p1x">highlight_off</i>`;
   document.getElementById('p1x').addEventListener('click', bailOnThis(focusAreaDetails[unPick[0]].slug));
-  document.getElementById('p2').innerHTML = `<img id="p2img" src=${focusAreaDetails[unPick[1]].image}><div id="info2">${focusAreaDetails[unPick[1]].info}<i class="material-icons" id="p2x">highlight_off</i></div>`;
+  document.getElementById('p2').innerHTML = `<img id="p2img" src=${focusAreaDetails[unPick[1]].image}><div id="info2">${focusAreaDetails[unPick[1]].info}</div><i class="material-icons" id="p2x">highlight_off</i>`;
   document.getElementById('p2x').addEventListener('click', bailOnThis(focusAreaDetails[unPick[1]].slug));
 
 }
