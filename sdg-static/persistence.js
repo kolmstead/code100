@@ -1,5 +1,7 @@
-function save(document) {
-  let id = document.id;
+function save(id, document) {
   localStorage.setItem(id, JSON.stringify(document));
-  console.log('did it save?');
+}
+
+function get(id) {
+  return JSON.parse(localStorage.getItem(id));
 }
