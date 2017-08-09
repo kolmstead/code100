@@ -10,7 +10,7 @@
 </form>
 
 
-<button id="storeMongo" action="/bob" method="POST">ToMongo</button>
+<button id="storeMongo" action="/bob" method="POST" type="submit">ToMongo</button>
 <p id="hello"></p>
 <script>
 
@@ -37,4 +37,37 @@ function trySome() {
 
 
 
+</script>
+
+<button id="ajaxButton" type="button">Make a request</button>
+
+<script>
+//https://developer.mozilla.org/en-US/docs/AJAX/Getting_Started
+// also looking at http://www.tweetegy.com/2011/12/connecting-a-html5-application-to-a-mongodb-instance-via-mongolab-rest-api/
+(function() {
+  var httpRequest;
+  document.getElementById("ajaxButton").addEventListener('click', makeRequest);
+
+  function makeRequest() {
+    httpRequest = new XMLHttpRequest();
+
+    if (!httpRequest) {
+      alert('Giving up :( Cannot create an XMLHTTP instance');
+      return false;
+    }
+    httpRequest.onreadystatechange = alertContents;
+    httpRequest.open('GET', 'test.html');
+    httpRequest.send();
+  }
+
+  function alertContents() {
+    if (httpRequest.readyState === XMLHttpRequest.DONE) {
+      if (httpRequest.status === 200) {
+        alert(httpRequest.responseText);
+      } else {
+        alert('There was a problem with the request.');
+      }
+    }
+  }
+})();
 </script>

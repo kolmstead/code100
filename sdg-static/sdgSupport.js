@@ -4,7 +4,6 @@ let considerLaterList = [];
 
 function showTopFive () {
 
-// let sdgAllProps = JSON.parse(localStorage.getItem('focusAreasJSON'));
 let sdgAllProps = get('focusAreasJSON');
 
   function getScores () {
@@ -56,7 +55,6 @@ function resetAll() {
 }
 
 function showConsiderLaterList() {
-  // considerLaterList = JSON.parse(localStorage.getItem('considerLater'));
   considerLaterList = get('considerLater');
   document.getElementById('later').innerHTML = `<p>ConsiderLaterList: ${considerLaterList}</p>`;
 }

@@ -31,22 +31,13 @@ app.get('/try', function (req, res) {
 app.post('/quotes', (req, res) => {
   db.collection('quotes').save(req.body, (err, result) => {
     if (err) return console.log(err)
-
     console.log('saved to database')
     res.redirect('/')
   })
 })
 
-// function saveMongo () {
-//   console.log("hello at saveMongo");
-//   document.getElementById('hello').innerHTML = 'save to Mongo?';
-//   db.collection('bob').save(
-//     {"theKey":"theValue"}
-//   );
-//   console.log("did anything make it?");
-// };
-
 app.post('/bob', (req, res) => {
+  console.log("anything from bob?");
   res.send("Hello from bob");
 })
 
