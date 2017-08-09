@@ -40,10 +40,17 @@ document.getElementById('reset').addEventListener('click', resetAll);
 
 
 // function to turn unObjects.js focusAreas into JSON
+
 function convertFocusAreasToJSON () {
-  let focusAreas = focusAreas;
-  save('focusAreasJSON', focusAreas);
+  let focusAreaList = focusAreas;
+  save('focusAreasJSON', focusAreaList);
 }
+
+// function to check if focusAreasJSON object exists in localStorage
+function checkFocusAreasJSONExists () {
+    if (!get('focusAreasJSON')) { convertFocusAreasToJSON(); }; // check that JSON object for focusAreas exists & create if it doesn't
+}
+
 
 // function to create considerLater empty array if it doesn't exist
 (function considerLater(e) {
@@ -53,7 +60,8 @@ function convertFocusAreasToJSON () {
   }
 })();
 
-//load showTopFive and showConsiderLaterList when document loads
+//check if FocusAreasJSON exists; load showTopFive and showConsiderLaterList when document loads
+checkFocusAreasJSONExists();
 showTopFive();
 showConsiderLaterList();
 
