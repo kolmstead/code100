@@ -36,9 +36,20 @@ app.post('/quotes', (req, res) => {
   })
 })
 
-app.post('/bob', (req, res) => {
-  console.log("anything from bob?");
-  res.send("Hello from bob");
+app.get('/joe', (req, res) => {
+  db.collection('quotes').save({"name": "from joe", "quote":"joe says hello"}, (err, result) => {
+    if (err) return console.log(err)
+    console.log('another from joe')
+    res.redirect('/try')
+  })
+})
+
+app.get('/bob', (req, res) => {
+  db.collection('quotes').save({"name": "from bob", "quote":"bob says hello"}, (err, result) => {
+    if (err) return console.log(err)
+    console.log('did bob go anywhere?')
+    res.redirect('/try')
+  })
 })
 
 app.listen(app.get('port'), function() {
