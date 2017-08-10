@@ -29,47 +29,52 @@
 <script src="unObjects.js"></script>
 <script src="makePairs.js"></script>
 <script src="sdgSupport.js"></script>
+<script src="persistence.js"></script>
+
 <script>
 
-document.getElementById('twopics').addEventListener('click',winner);
+document.getElementById('twopics').addEventListener('click', winner);
 document.getElementById('spin').addEventListener('click', createPair);
 document.getElementById('showTopFive').addEventListener('click', showTopFive);
 document.getElementById('reset').addEventListener('click', resetAll);
 
 
 // function to turn unObjects.js focusAreas into JSON
+
 function convertFocusAreasToJSON () {
-  let focusAreasJSON = JSON.stringify(focusAreas);
-  localStorage.setItem('focusAreasJSON', focusAreasJSON);
+  let focusAreaList = focusAreas;
+  save('focusAreasJSON', focusAreaList);
 }
 
-// function to create considerLater empty array if it doesn't exist
-// function createConsiderLater () {
-//   if (!localStorage.getItem('considerLater')) { considerLater(e); };
-// createConsiderLater();
+// function to check if focusAreasJSON object exists in localStorage
+function checkFocusAreasJSONExists () {
+    if (!get('focusAreasJSON')) { convertFocusAreasToJSON(); }; // check that JSON object for focusAreas exists & create if it doesn't
+}
 
-// create location to store not-interested-in-these-goals right now list
-(function considerLater (e) {
-  if (!localStorage.getItem('considerLater')) {
-  const considerLater = [];
-  localStorage.setItem('considerLater', JSON.stringify(considerLater) );
+
+// function to create considerLater empty array if it doesn't exist
+(function considerLater(e) {
+  if (!get('considerLater')) {
+    const considerLater = [];
+    save('considerLater', considerLater);
   }
 })();
 
-//load showTopFive and showConsiderLaterList when document loads
+//check if FocusAreasJSON exists; load showTopFive and showConsiderLaterList when document loads
+checkFocusAreasJSONExists();
 showTopFive();
 showConsiderLaterList();
 
 
 // function winner() adds score to the clicked item, stores other info, and gets a new pair
 // need to work on scoring methods and algorithm. start by being able to keep score of what is picked
-// and maybe store the pair it beat. Need to decide storage method. Maybe mongodb. Maybe node.js. Maybe firebase.
+// and maybe store the pair it beat. Need to decide storage method. Maybe mongodb. Maybe firebase.
 
 let iAmClicked = '';
 
 function winner (e) {
   let clicked = e.target.parentNode;
-  let matchState = JSON.parse(localStorage.getItem('focusAreasJSON'));
+  let matchState = get('focusAreasJSON');
   
   function recordMatch (a,b) {
     matchState[unPick[a]].pairs.push(unPick[b]);
@@ -81,7 +86,7 @@ function winner (e) {
     p1score = p1score + 1;
     matchState[unPick[a]].score = p1score;
     recordMatch(a,b);
-    localStorage.setItem('focusAreasJSON', JSON.stringify(matchState));
+    save('focusAreasJSON', matchState);
     createPair();
     showTopFive();
     showConsiderLaterList();
@@ -91,7 +96,7 @@ function winner (e) {
     p2score = p2score + 1;
     matchState[unPick[a]].score = p2score;
     recordMatch(a,b);
-    localStorage.setItem('focusAreasJSON', JSON.stringify(matchState));
+    save('focusAreasJSON', matchState);
     createPair();
     showTopFive();
     showConsiderLaterList();
@@ -111,10 +116,10 @@ let unPick = [];
 // create a pair of SDGs to chose a winner from
 function createPair () {
 
-const considerLater = JSON.parse(localStorage.getItem('considerLater'));  
+  const considerLater = get('considerLater'); 
   //this is to eliminate certain sdgs from the contest; adds things to considerLater array
         let bailOnThis = slug => e => {
-          let considerLater = JSON.parse(localStorage.getItem('considerLater'));
+          let considerLater = get('considerLater');
           e.stopPropagation();
           considerLater.push(slug);
           let indexOfConsiderLater = unPick.indexOf(slug);
@@ -122,7 +127,7 @@ const considerLater = JSON.parse(localStorage.getItem('considerLater'));
           unPick.delete(slug);
           console.log(slug, "moved to considerLater list");
           unPick = [...unPick];
-          localStorage.setItem('considerLater', JSON.stringify(considerLater));
+          save('considerLater', considerLater);
           showConsiderLaterList();
           pickRandom();
           if (indexOfConsiderLater === 0) {
@@ -138,9 +143,9 @@ const considerLater = JSON.parse(localStorage.getItem('considerLater'));
         }  
 
   
-  if (!localStorage.getItem('focusAreasJSON')) { convertFocusAreasToJSON(); }; // check that JSON object for focusAreas exists & create if it doesn't
-  let focusAreaDetails = JSON.parse(localStorage.getItem('focusAreasJSON')); //returns object with all details, for slug, img source, label, etc.
-  let areaList = Object.keys(JSON.parse(localStorage.getItem('focusAreasJSON'))); //a list of focus areas to get length
+  if (!get('focusAreasJSON')) { convertFocusAreasToJSON(); }; // check that JSON object for focusAreas exists & create if it doesn't
+  let focusAreaDetails = get('focusAreasJSON'); // returns object with all details, for slug, img source, label, etc.
+  let areaList = Object.keys(get('focusAreasJSON')); //a list of focus areas to get length for pickRandom()
 
 // pickRandom() -- get a random sdg, check it, when good, add to unPick array
     function pickRandom() {

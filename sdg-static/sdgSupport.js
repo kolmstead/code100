@@ -4,7 +4,7 @@ let considerLaterList = [];
 
 function showTopFive () {
 
-let sdgAllProps = JSON.parse(localStorage.getItem('focusAreasJSON'));
+let sdgAllProps = get('focusAreasJSON');
 
   function getScores () {
     
@@ -42,19 +42,20 @@ let sdgAllProps = JSON.parse(localStorage.getItem('focusAreasJSON'));
 
 // function to reset all scores and considerLater list in localStorage
 function resetAll() {
-  // localStorage.removeItem('focusAreasJSON');
+
   considerLater = [];
-  localStorage.setItem('considerLater', JSON.stringify(considerLater));
+  save('considerLater', considerLater);
   localStorage.removeItem('focusAreasJSON');
-  let focusAreasJSON = JSON.stringify(focusAreas);
-  localStorage.setItem('focusAreasJSON', focusAreasJSON);
+  save('focusAreasJSON', focusAreas); //saves reset focusAreas, with 0 scores, to localStorage
+  
   showTopFive();
   showConsiderLaterList();
+  
   console.log("scores, matches and considerLater list all reset");
 }
 
 function showConsiderLaterList() {
-  considerLaterList = JSON.parse(localStorage.getItem('considerLater'));
+  considerLaterList = get('considerLater');
   document.getElementById('later').innerHTML = `<p>ConsiderLaterList: ${considerLaterList}</p>`;
 }
 

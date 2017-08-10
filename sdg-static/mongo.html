@@ -1,40 +1,69 @@
+<script src="persistence.js"></script>
+
 <form action="/quotes" method="POST">
   <input type="text" placeholder="name" name="name">
   <input type="text" placeholder="quote" name="quote">
   <button type="submit">Submit</button>
 </form>
 
-<form action="/joe" method="POST">
+<form action="/joe" method="GET">
     <input type="text" name="newID" placeholder="Enter your ID"/>
-    <input type="submit" value="Click here to submit the form"/>
+    <input type="submit" value="Try here to submit Joe"/>
 </form>
 
-
-<button id="storeMongo" action="/bob" method="POST">ToMongo</button>
+<form action="/bob" method="GET">
+  <button id="storeMongo" type="submit">ToMongo Bob</button>
+</form>
 <p id="hello"></p>
 <script>
 
 
-// document.getElementById('storeMongo').addEventListener('click', saveMongo);
-let sdgAllProps = JSON.parse(localStorage.getItem('focusAreasJSON'));
+// document.getElementById('storeMongo').addEventListener('click', '/bob');
+// let sdgAllProps = get('focusAreasJSON');
 
-// function saveMongo () {
-//   console.log("hello at saveMongo");
-//   document.getElementById('hello').innerHTML = 'save to Mongo?';
-//   db.collection('sdgs').save(
-//     { sdgAllProps }, (err, result) => {
-//       if (err) return console.log(err)
-//       console.log('stuff saved to Mongo')
-//     }
-//   )
-// }
+
 function trySome() {
-  console.log("Tried Some.");
-  console.log("sdgs?", sdgAllProps);
+  let some = "Hello from trySome";
+  save('beans', some);
+  document.getElementById('hello').innerHTML = `<h1>Wow!${sdgAllProps["un17"].label}</h1>`;
 }
 
 
 
 
 
+</script>
+
+<button id="ajaxButton" type="button">Make a request Joe</button>
+
+<script>
+//https://developer.mozilla.org/en-US/docs/AJAX/Getting_Started
+// also looking at http://www.tweetegy.com/2011/12/connecting-a-html5-application-to-a-mongodb-instance-via-mongolab-rest-api/
+(function() {
+  var httpRequest;
+  document.getElementById("ajaxButton").addEventListener('click', makeRequest);
+
+  function makeRequest() {
+    httpRequest = new XMLHttpRequest();
+
+    if (!httpRequest) {
+      alert('Giving up :( Cannot create an XMLHTTP instance');
+      return false;
+    }
+    httpRequest.onreadystatechange = alertContents;
+    // httpRequest.open('GET', 'test.html');
+    httpRequest.open('GET', '/joe');
+    httpRequest.send();
+  }
+
+  function alertContents() {
+    if (httpRequest.readyState === XMLHttpRequest.DONE) {
+      if (httpRequest.status === 200) {
+        alert(httpRequest.responseText);
+      } else {
+        alert('There was a problem with the request.');
+      }
+    }
+  }
+})();
 </script>

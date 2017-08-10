@@ -31,23 +31,25 @@ app.get('/try', function (req, res) {
 app.post('/quotes', (req, res) => {
   db.collection('quotes').save(req.body, (err, result) => {
     if (err) return console.log(err)
-
     console.log('saved to database')
     res.redirect('/')
   })
 })
 
-// function saveMongo () {
-//   console.log("hello at saveMongo");
-//   document.getElementById('hello').innerHTML = 'save to Mongo?';
-//   db.collection('bob').save(
-//     {"theKey":"theValue"}
-//   );
-//   console.log("did anything make it?");
-// };
+app.get('/joe', (req, res) => {
+  db.collection('quotes').save({"name": "from joe", "quote":"joe says hello"}, (err, result) => {
+    if (err) return console.log(err)
+    console.log('another from joe')
+    res.redirect('/try')
+  })
+})
 
-app.post('/bob', (req, res) => {
-  res.send("Hello from bob");
+app.get('/bob', (req, res) => {
+  db.collection('quotes').save({"name": "from bob", "quote":"bob says hello"}, (err, result) => {
+    if (err) return console.log(err)
+    console.log('did bob go anywhere?')
+    res.redirect('/try')
+  })
 })
 
 app.listen(app.get('port'), function() {
