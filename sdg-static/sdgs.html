@@ -24,12 +24,14 @@
 </div>
 <div id="top5"></div>
 <div id="later"></div>
+<div id="top6"></div>
 
 </div>
 <script src="unObjects.js"></script>
+<script src="persistence.js"></script>
 <script src="makePairs.js"></script>
 <script src="sdgSupport.js"></script>
-<script src="persistence.js"></script>
+
 
 <script>
 
@@ -63,7 +65,8 @@ function checkFocusAreasJSONExists () {
 //check if FocusAreasJSON exists; load showTopFive and showConsiderLaterList when document loads
 checkFocusAreasJSONExists();
 showTopFive();
-showConsiderLaterList();
+// showConsiderLaterList();
+doIt('considerLater');
 
 
 // function winner() adds score to the clicked item, stores other info, and gets a new pair
@@ -89,7 +92,8 @@ function winner (e) {
     save('focusAreasJSON', matchState);
     createPair();
     showTopFive();
-    showConsiderLaterList();
+    // showConsiderLaterList();
+    doIt('considerLater');
   } else { 
     let a = 1; let b = 0; //index of pairs in id=p1 and id=p2
     let p2score = matchState[unPick[a]].score;
@@ -99,7 +103,8 @@ function winner (e) {
     save('focusAreasJSON', matchState);
     createPair();
     showTopFive();
-    showConsiderLaterList();
+    // showConsiderLaterList();
+    doIt('considerLater');
   }
 }
 
@@ -128,7 +133,8 @@ function createPair () {
           console.log(slug, "moved to considerLater list");
           unPick = [...unPick];
           save('considerLater', considerLater);
-          showConsiderLaterList();
+          // showConsiderLaterList();
+          doIt('considerLater');
           pickRandom();
           if (indexOfConsiderLater === 0) {
             unPick = unPick.reverse();
