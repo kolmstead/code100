@@ -74,8 +74,18 @@ function getScoresC (props) {
     for (i=0; i<scores.length; i++) {
       onlyScores[props[scores[i]].slug] = props[scores[i]].score;
     } 
-    return Promise.resolve([onlyScores, allProps]);
+    // return Promise.resolve([onlyScores, allProps]);
+    return ([onlyScores, allProps]);
 }
+
+function sortScoresC ([onlyScores, allProps]) {
+    let mySortedScores = Object.entries(onlyScores);
+    mySortedScores.sort((x,y) => y[1] - x[1]);
+    console.log("sorted:", mySortedScores)
+    // return Promise.resolve([allProps, mySortedScores])
+    return ([allProps, mySortedScores]);
+}
+
 
 function  sortScoresB (orderList) {
   return Promise.resolve()
@@ -86,17 +96,6 @@ function  sortScoresB (orderList) {
   });  
 }
 
-function sortScoresC ([allProps, onlyScores]) {
-    let allProps = allProps;
-    let bigX = 333;
-    let bigY = 444;
-    bigY = bigX + bigY;
-    let mySortedScores = [];
-    mySortedScores = Object.entries(onlyScores);
-    mySortedScores.sort((x,y) => y[1] - x[1]);
-    console.log("sorted:", mySortedScores)
-    return Promise.resolve([allProps, mySortedScores])
-}
 
 // two functions separate createMarkup and renderScores
 
