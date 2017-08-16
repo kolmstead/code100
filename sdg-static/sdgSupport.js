@@ -1,7 +1,7 @@
 //proof that all these can be deleted - not sure yet.
-let orderList = {};
-let sortedScores = [];
-let considerLaterList = [];
+// let orderList = {};
+// let sortedScores = [];
+// let considerLaterList = [];
 
 //new showTopFive() to work modular async code
 function showTopFive () {
@@ -61,26 +61,18 @@ function resetAll() {
   save('focusAreasJSON', focusAreas); //saves reset focusAreas, with 0 scores, to localStorage
   
   showTopFive();
-  // showConsiderLaterList();
-  doIt('considerLater');
+  showConsiderLaterList('considerLater');
   
   console.log("scores, matches and considerLater list all reset");
 }
 
 
-// original showConsiderLaterList() is not async; see below for async version using promises
-function showConsiderLaterList() {
-  considerLaterList = get('considerLater');
-  document.getElementById('later').innerHTML = `<p>ConsiderLaterList: ${considerLaterList}</p>`;
-}
-
-
 // the Promise based replacement for showConsiderLaterList/ uses async get3() or get2() then showList() as final
-function doIt(id) {
-  get3(id)
+function showConsiderLaterList(id) {
+  getStuff(id)
     .then(showList);
 }
 
-function showList(bob) {
-  document.getElementById('later').innerHTML = `<p>Promised LaterList: ${bob}</p>`;
+function showList(considerLaterList) {
+  document.getElementById('later').innerHTML = `<p>ConsiderLaterList: ${considerLaterList}</p>`;
 }
