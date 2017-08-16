@@ -1,9 +1,4 @@
-//proof that all these can be deleted - not sure yet.
-// let orderList = {};
-// let sortedScores = [];
-// let considerLaterList = [];
-
-//new showTopFive() to work modular async code
+//promise based shopTopFive()
 function showTopFive () {
   getStuff('focusAreasJSON')
     .then(getScores)
