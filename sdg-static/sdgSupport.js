@@ -1,4 +1,4 @@
-//promise based shopTopFive()
+//promise based showTopFive()
 function showTopFive () {
   getStuff('focusAreasJSON')
     .then(getScores)
