@@ -47,6 +47,7 @@ function convertFocusAreasToJSON () {
 }
 
 // function to check if focusAreasJSON object exists in localStorage
+//replaced by checkMake() see in use below 
 function checkFocusAreasJSONExists () {
     if (!get('focusAreasJSON')) { convertFocusAreasToJSON(); }; // check that JSON object for focusAreas exists & create if it doesn't
 }
@@ -61,7 +62,8 @@ function checkFocusAreasJSONExists () {
 })();
 
 //check if FocusAreasJSON exists; load showTopFive and showConsiderLaterList when document loads
-checkFocusAreasJSONExists();
+// checkFocusAreasJSONExists();
+checkMake('focusAreasJSON', focusAreas); //uses the promise based saveStuff() inside
 showTopFive();
 // showConsiderLaterList();
 showConsiderLaterList('considerLater');

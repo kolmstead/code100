@@ -71,3 +71,18 @@ function showConsiderLaterList(id) {
 function showList(considerLaterList) {
   document.getElementById('later').innerHTML = `<p>ConsiderLaterList: ${considerLaterList}</p>`;
 }
+
+function saveStuff(id, doc) {
+  return Promise.resolve()
+    .then( () => localStorage.setItem(id, JSON.stringify(doc)));
+}
+
+// promise based function to turn unObjects.js focusAreas into JSON
+
+function convertToJSONAndSave (id, doc) { // save is already save and convert to JSON - I think this f(x) isn't needed
+  saveStuff(id, doc);
+}
+
+function checkMake (id, doc) {
+  if (!get(id)) { saveStuff(id, doc) } else {console.log("it exists")};
+}
