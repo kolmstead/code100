@@ -39,33 +39,10 @@ document.getElementById('spin').addEventListener('click', createPair);
 document.getElementById('reset').addEventListener('click', resetAll);
 
 
-// function to turn unObjects.js focusAreas into JSON
-
-function convertFocusAreasToJSON () {
-  let focusAreaList = focusAreas;
-  save('focusAreasJSON', focusAreaList);
-}
-
-// function to check if focusAreasJSON object exists in localStorage
-//replaced by checkMake() see in use below 
-function checkFocusAreasJSONExists () {
-    if (!get('focusAreasJSON')) { convertFocusAreasToJSON(); }; // check that JSON object for focusAreas exists & create if it doesn't
-}
-
-
-// function to create considerLater empty array if it doesn't exist
-(function considerLater(e) {
-  if (!get('considerLater')) {
-    const considerLater = [];
-    save('considerLater', considerLater);
-  }
-})();
-
-//check if FocusAreasJSON exists; load showTopFive and showConsiderLaterList when document loads
-// checkFocusAreasJSONExists();
-checkMake('focusAreasJSON', focusAreas); //uses the promise based saveStuff() inside
+//check if FocusAreasJSON exists; check if considerLaterList exists; load showTopFive and showConsiderLaterList when document loads
+checkMake('focusAreasJSON', focusAreas);
+checkConsiderLater('considerLater');
 showTopFive();
-// showConsiderLaterList();
 showConsiderLaterList('considerLater');
 
 
@@ -120,6 +97,8 @@ let unPick = [];
 
 // create a pair of SDGs to chose a winner from
 function createPair () {
+  
+  checkConsiderLater('considerLater');
 
   const considerLater = get('considerLater'); 
   //this is to eliminate certain sdgs from the contest; adds things to considerLater array
@@ -140,10 +119,12 @@ function createPair () {
             unPick = unPick.reverse();
               document.getElementById('p1').innerHTML = `<img id="p1img" src=${focusAreaDetails[unPick[0]].image}><div id="info1">${focusAreaDetails[unPick[0]].info}</div><i class="material-icons" id="p1x">highlight_off</i>`;
               document.getElementById('p1x').addEventListener('click', bailOnThis(focusAreaDetails[unPick[0]].slug));
+            saveStuff('unPick', unPick);
             return unPick;
           } else {
               document.getElementById('p2').innerHTML = `<img id="p2img" src=${focusAreaDetails[unPick[1]].image}><div id="info2">${focusAreaDetails[unPick[1]].info}</div><i class="material-icons" id="p2x">highlight_off</i>`;
-              document.getElementById('p2x').addEventListener('click', bailOnThis(focusAreaDetails[unPick[1]].slug));            
+              document.getElementById('p2x').addEventListener('click', bailOnThis(focusAreaDetails[unPick[1]].slug)); 
+            saveStuff('unPick', unPick);  
             return unPick;
           }
         }  
@@ -170,7 +151,7 @@ function createPair () {
     pickRandom();
   }
 
-
+saveStuff('unPick', unPick);
 //event listeners to show images and x's to add things to considerLater list
   document.getElementById('p1').innerHTML = `<img id="p1img" src=${focusAreaDetails[unPick[0]].image}><div id="info1">${focusAreaDetails[unPick[0]].info}</div><i class="material-icons" id="p1x">highlight_off</i>`;
   document.getElementById('p1x').addEventListener('click', bailOnThis(focusAreaDetails[unPick[0]].slug));
@@ -182,6 +163,50 @@ function createPair () {
 
 createPair(); // this initializes the web page with a pair to pick from
 
+//how to build promise based createPair (includes checkConsiderLater, bailOnThis:addToConsiderLater creates unPick, renders unPick pair)
+/*
+showPair(what props to pass?) {
+  getProps(what props: need considerLater to check, need pickRandom, need allProps/focusAreasJSON,)
+   .then(get a first pick)
+   .then(display a first pick)
+   .then (get a 2nd pick)
+   .then (display a second pick)
+   .then(return the unPick match? or store it? -- probably store the pick for other stuff to use; they get it async; slower?)
+}
+
+addToConsiderLater(what props to pass?) {
+  registerWhatClicked
+    .then(add to considerLaterList)
+    .then(update considerlaterList display)
+    .then(pick a new single Pick)
+    .then(render new single Pick)
+}
+
+
+
+
+
+
+
+
+
+*/
+//how to build pickWinner (includes recording the Match, updating the score, saving the score, getting new match, updating topFive display)
+/*
+
+pickWinner (what props?) {
+  registerWhatClicked
+    .then (save the match info)
+    .then (update the score info - maybe before saving match info)
+    .then (update the top 5 display)
+    .then(render a new Pair)
+}
+
+
+
+
+*/
+//OTHER Stuff to possibly add later after re-writing promise based and getting to work with mongodb
 // add links to un sdg sites for more info or actions
 // add a link to play a video
 // add credits for the app and un site
@@ -193,6 +218,7 @@ createPair(); // this initializes the web page with a pair to pick from
 // consider doing images as a sprite sheet
 // define layout for showing top 3 picks in order
 // function to remove an sdg from considerLater
+// Maybe have parts of the world as part of the picks; pick a focus, pick a region, pick a dollar amount, pick a time commitment
 
 </script>
 </body>

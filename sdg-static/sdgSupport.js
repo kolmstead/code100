@@ -86,3 +86,11 @@ function convertToJSONAndSave (id, doc) { // save is already save and convert to
 function checkMake (id, doc) {
   if (!get(id)) { saveStuff(id, doc) } else {console.log("it exists")};
 }
+
+// see if considerLater exists, if not create it
+function checkConsiderLater(id) {
+  if (!get(id)) {
+    const considerLater = [];
+    saveStuff(id, considerLater);
+  }
+};
