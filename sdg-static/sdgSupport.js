@@ -62,7 +62,7 @@ function resetAll() {
 }
 
 
-// the Promise based replacement for showConsiderLaterList/ uses async get3() or get2() then showList() as final
+// the Promise based replacement for showConsiderLaterList
 function showConsiderLaterList(id) {
   getStuff(id)
     .then(showList);
@@ -84,7 +84,7 @@ function convertToJSONAndSave (id, doc) { // save is already save and convert to
 }
 
 function checkMake (id, doc) {
-  if (!get(id)) { saveStuff(id, doc) } else {console.log("it exists")};
+  if (!get(id)) { saveStuff(id, doc) };
 }
 
 // see if considerLater exists, if not create it
