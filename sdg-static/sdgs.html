@@ -13,94 +13,77 @@
   <div id="miniHeader"><img src="UNimages/un17banner.png" height="70px"></div>
 
   <div id="twopics">
-    <div id='p1'><img src="//placehold.it/150x150"><div id="info1"></div></div>
-    <div id='p2'><img src="//placehold.it/150x150"><div id="info2"></div></div>
+    <div id='p1'><div id="p1imgBox"><img src="//placehold.it/150x150"></div><div id="info1"></div><i class="material-icons" id="p1x">highlight_off</i></div>
+    <div id='p2'><div id="p2imgBox"><img src="//placehold.it/150x150"></div><div id="info2"></div><i class="material-icons" id="p2x">highlight_off</i></div>
   </div>
 
 <div id="buttons">
   <button id="spin">Spin</button>
-  <button id="showTopFive">Top Five</button>
   <button id="reset">Reset All</button>
 </div>
 <div id="top5"></div>
 <div id="later"></div>
+<div id="top6"></div>
 
 </div>
 <script src="unObjects.js"></script>
+<script src="persistence.js"></script>
 <script src="makePairs.js"></script>
 <script src="sdgSupport.js"></script>
-<script src="persistence.js"></script>
+
 
 <script>
 
 document.getElementById('twopics').addEventListener('click', winner);
-document.getElementById('spin').addEventListener('click', createPair);
-document.getElementById('showTopFive').addEventListener('click', showTopFive);
+document.getElementById('spin').addEventListener('click', testMe);  // promise based for createPair()
 document.getElementById('reset').addEventListener('click', resetAll);
 
 
-// function to turn unObjects.js focusAreas into JSON
-
-function convertFocusAreasToJSON () {
-  let focusAreaList = focusAreas;
-  save('focusAreasJSON', focusAreaList);
-}
-
-// function to check if focusAreasJSON object exists in localStorage
-function checkFocusAreasJSONExists () {
-    if (!get('focusAreasJSON')) { convertFocusAreasToJSON(); }; // check that JSON object for focusAreas exists & create if it doesn't
-}
-
-
-// function to create considerLater empty array if it doesn't exist
-(function considerLater(e) {
-  if (!get('considerLater')) {
-    const considerLater = [];
-    save('considerLater', considerLater);
-  }
-})();
-
-//check if FocusAreasJSON exists; load showTopFive and showConsiderLaterList when document loads
-checkFocusAreasJSONExists();
+//check if FocusAreasJSON exists; check if considerLaterList exists; load showTopFive and showConsiderLaterList when document loads
+checkMake('focusAreasJSON', focusAreas);
+checkConsiderLater('considerLater');
 showTopFive();
-showConsiderLaterList();
+showConsiderLaterList('considerLater');
 
 
 // function winner() adds score to the clicked item, stores other info, and gets a new pair
 // need to work on scoring methods and algorithm. start by being able to keep score of what is picked
 // and maybe store the pair it beat. Need to decide storage method. Maybe mongodb. Maybe firebase.
 
-let iAmClicked = '';
-
 function winner (e) {
-  let clicked = e.target.parentNode;
-  let matchState = get('focusAreasJSON');
-  
-  function recordMatch (a,b) {
-    matchState[unPick[a]].pairs.push(unPick[b]);
-  }
-  
-  if ( clicked.id === 'p1') {
-    let a = 0; let b = 1; //index of pairs in id=p1 and id=p2
-    let p1score = matchState[unPick[a]].score;
+  let clicked = e.target.parentNode.parentNode.id;
+  let props = getStuff('focusAreasJSON');
+  let considerLater = getStuff('considerLater');
+  let unPick = getStuff('unPick');
+  return Promise.all([clicked, props, considerLater, unPick])
+    .then(scoreWinner);
+}
+
+function scoreWinner ([clicked, props, considerLater, unPick]) {
+
+  if (clicked === 'p1') {
+    let a = 0; let b = 1;
+    let p1score = props[unPick[a]].score;
     p1score = p1score + 1;
-    matchState[unPick[a]].score = p1score;
-    recordMatch(a,b);
-    save('focusAreasJSON', matchState);
-    createPair();
+    props[unPick[a]].score = p1score;
+    recordMatch(props,unPick,a,b);
+    saveStuff('focusAreasJSON', props)
     showTopFive();
-    showConsiderLaterList();
-  } else { 
-    let a = 1; let b = 0; //index of pairs in id=p1 and id=p2
-    let p2score = matchState[unPick[a]].score;
+    testMe();
+  } else {
+    let a=1; let b=0;
+    let p2score = props[unPick[a]].score;
     p2score = p2score + 1;
-    matchState[unPick[a]].score = p2score;
-    recordMatch(a,b);
-    save('focusAreasJSON', matchState);
-    createPair();
+    props[unPick[a]].score = p2score;
+    recordMatch(props,unPick,a,b);
+    saveStuff('focusAreasJSON', props)
     showTopFive();
-    showConsiderLaterList();
+    testMe();
   }
+}
+
+function recordMatch(props,unPick,a,b) {
+  props[unPick[a]].pairs.push(unPick[b]);
 }
 
 
@@ -111,71 +94,110 @@ function getRandom(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-let unPick = []; 
 
-// create a pair of SDGs to chose a winner from
-function createPair () {
-
-  const considerLater = get('considerLater'); 
-  //this is to eliminate certain sdgs from the contest; adds things to considerLater array
-        let bailOnThis = slug => e => {
-          let considerLater = get('considerLater');
-          e.stopPropagation();
-          considerLater.push(slug);
-          let indexOfConsiderLater = unPick.indexOf(slug);
-          unPick = new Set(unPick);
-          unPick.delete(slug);
-          console.log(slug, "moved to considerLater list");
-          unPick = [...unPick];
-          save('considerLater', considerLater);
-          showConsiderLaterList();
-          pickRandom();
-          if (indexOfConsiderLater === 0) {
-            unPick = unPick.reverse();
-              document.getElementById('p1').innerHTML = `<img id="p1img" src=${focusAreaDetails[unPick[0]].image}><div id="info1">${focusAreaDetails[unPick[0]].info}</div><i class="material-icons" id="p1x">highlight_off</i>`;
-              document.getElementById('p1x').addEventListener('click', bailOnThis(focusAreaDetails[unPick[0]].slug));
-            return unPick;
-          } else {
-              document.getElementById('p2').innerHTML = `<img id="p2img" src=${focusAreaDetails[unPick[1]].image}><div id="info2">${focusAreaDetails[unPick[1]].info}</div><i class="material-icons" id="p2x">highlight_off</i>`;
-              document.getElementById('p2x').addEventListener('click', bailOnThis(focusAreaDetails[unPick[1]].slug));            
-            return unPick;
-          }
-        }  
-
-  
-  if (!get('focusAreasJSON')) { convertFocusAreasToJSON(); }; // check that JSON object for focusAreas exists & create if it doesn't
-  let focusAreaDetails = get('focusAreasJSON'); // returns object with all details, for slug, img source, label, etc.
-  let areaList = Object.keys(get('focusAreasJSON')); //a list of focus areas to get length for pickRandom()
-
-// pickRandom() -- get a random sdg, check it, when good, add to unPick array
-    function pickRandom() {
-      let pick = focusAreaDetails[areaList[getRandom(0, areaList.length - 1)]].slug;
-      if ( considerLater.includes(pick) || unPick.includes(pick)) {
-        return pickRandom();
-      } else {
-        unPick.push(pick);
-        return unPick;
-      }
-    }
-    
-  //run pickRandom() two times to create a pair assigned to unPick array
-  unPick = [];
-  for (i=0; i<2; i++) {
-    pickRandom();
-  }
+//*****************turned this main function off to try promise based stuff*******************************
+// createPair(); // this initializes the web page with a pair to pick from
+testMe();
 
 
-//event listeners to show images and x's to add things to considerLater list
-  document.getElementById('p1').innerHTML = `<img id="p1img" src=${focusAreaDetails[unPick[0]].image}><div id="info1">${focusAreaDetails[unPick[0]].info}</div><i class="material-icons" id="p1x">highlight_off</i>`;
-  document.getElementById('p1x').addEventListener('click', bailOnThis(focusAreaDetails[unPick[0]].slug));
-  document.getElementById('p2').innerHTML = `<img id="p2img" src=${focusAreaDetails[unPick[1]].image}><div id="info2">${focusAreaDetails[unPick[1]].info}</div><i class="material-icons" id="p2x">highlight_off</i>`;
-  document.getElementById('p2x').addEventListener('click', bailOnThis(focusAreaDetails[unPick[1]].slug));
 
+//start test chain for replacement of createPair()
+function testMe(){
+  getAllProps()
+    .then(getNewPair)
+    .then(renderNewPair)
 }
 
+function getAllProps() {
+  let props = getStuff('focusAreasJSON');
+  let considerLater = getStuff('considerLater');
+  return Promise.all([props, considerLater]);
+}
 
-createPair(); // this initializes the web page with a pair to pick from
+function getNewPair([props,considerLater]) {
+    let unPick = [];
+    let propsList = Object.keys(props);
+  for (i=0; i<2; i++) {
+    pickRandom2([props,considerLater,propsList, unPick]);
+  }
+  saveStuff('unPick', unPick)
+  return ([props, considerLater, unPick])
+}
 
+    // runs inside getNewPair()
+    function pickRandom2([props,considerLater,propsList, unPick]) {
+      let pick = props[propsList[getRandom(0, propsList.length - 1)]].slug;
+      if ( considerLater.includes(pick) || unPick.includes(pick)) {
+        pickRandom2([props,considerLater,propsList, unPick]);
+      } else {
+        unPick.push(pick);
+        saveStuff('unPick', unPick);
+      }
+      return ([props, considerLater, propsList, unPick])
+    }
+
+function renderNewPair([props, considerLater, unPick]) {
+  
+  document.getElementById('p1imgBox').innerHTML = `<img id="p1img" src=${props[unPick[0]].image}>`;
+  document.getElementById('info1').innerHTML = `${props[unPick[0]].info}`;
+
+  document.getElementById('p2imgBox').innerHTML = `<img id="p2img" src=${props[unPick[1]].image}>`;
+  document.getElementById('info2').innerHTML = `${props[unPick[1]].info}`;
+  
+  document.getElementById('p1x').addEventListener('click', pickConsiderLater);
+  document.getElementById('p2x').addEventListener('click', pickConsiderLater);
+  
+}
+
+function pickConsiderLater(e) {
+  let clicked = e.target.id;
+  e.stopPropagation();
+  let props = getStuff('focusAreasJSON');
+  let considerLater = getStuff('considerLater');
+  let unPick = getStuff('unPick');
+  return Promise.all([clicked, props, considerLater, unPick])
+    .then(handlePickConsiderLater);
+  
+}
+
+function handlePickConsiderLater([clicked, props, considerLater, unPick]) {
+  if (considerLater.length > 10) {
+    alert("You've reached the max for your ConsiderLaterList.")
+  } else {
+    if (clicked === 'p1x') {
+      let slug = props[unPick[0]].slug;
+      considerLater.push(slug);
+      let indexOfClickedUnPick = unPick.indexOf(slug);
+      let unPickObj = new Set(unPick); //convert array to Object
+      unPickObj.delete(slug);
+      unPick = [...unPickObj]; // convert object back to array
+      let propsList = Object.keys(props);
+      pickRandom2([props,considerLater,propsList, unPick]);
+      unPick = unPick.reverse();
+      document.getElementById('p1imgBox').innerHTML = `<img id="p1img" src=${props[unPick[0]].image}>`;
+      document.getElementById('info1').innerHTML = `${props[unPick[0]].info}`;
+      document.getElementById('p1x').addEventListener('click', pickConsiderLater);
+      saveStuff('considerLater', considerLater)
+      showConsiderLaterList('considerLater');
+    } else {
+      let slug = props[unPick[1]].slug;
+      considerLater.push(slug);
+      let indexOfClickedUnPick = unPick.indexOf(slug);
+      let unPickObj = new Set(unPick); //convert array to Object
+      unPickObj.delete(slug);
+      unPick = [...unPickObj]; // convert object back to array
+      let propsList = Object.keys(props);
+      pickRandom2([props,considerLater,propsList, unPick]);
+      document.getElementById('p2imgBox').innerHTML = `<img id="p2img" src=${props[unPick[1]].image}>`;
+      document.getElementById('info2').innerHTML = `${props[unPick[1]].info}`;
+      document.getElementById('p2x').addEventListener('click', pickConsiderLater);
+      saveStuff('considerLater', considerLater)
+      showConsiderLaterList('considerLater');
+    }
+  }  
+}
+
+//OTHER Stuff to possibly add later after re-writing promise based and getting to work with mongodb
 // add links to un sdg sites for more info or actions
 // add a link to play a video
 // add credits for the app and un site
@@ -187,6 +209,8 @@ createPair(); // this initializes the web page with a pair to pick from
 // consider doing images as a sprite sheet
 // define layout for showing top 3 picks in order
 // function to remove an sdg from considerLater
+// Maybe have parts of the world as part of the picks; pick a focus, pick a region, pick a dollar amount, pick a time commitment
+// Consider a sprite based graphic (all logos on 1 graphic with css coordinates?)
 
 </script>
 </body>
