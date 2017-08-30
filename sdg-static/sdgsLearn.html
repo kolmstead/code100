@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+<head>
+<title>Learn UN SDGs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" text="text/css" href="sdgStyles.css" />
+</head>
+<body>
+
+<div id="container-learn">  
+
+  <div id="miniHeader"><img src="UNimages/un17banner.png" height="70px"></div>
+  <div id="learningMatrix"></div>
+  <div id="info-container">
+    <div id="info-content">
+      <i class="material-icons" id="xLearn" style:"display:none">highlight_off</i>
+    </div>
+  </div>
+  
+</div>
+
+
+<script src="unObjects.js"></script>
+<script src="persistence.js"></script>
+<script src="makePairs.js"></script>
+<script src="sdgSupport.js"></script>
+<script>
+
+displaySdgLearningMatrix();
+
+function displaySdgLearningMatrix(e){
+  let props = getStuff('focusAreasJSON');
+  // let propList = Object.keys(props); ********why can't I do this here? promise isn't resolved?
+  Promise.all([e, props])
+    .then(renderSdg);
+}
+
+function renderSdg ([e, props]) {
+  let propList = Object.keys(props)
+  propList.map( (i) => {
+      // document.getElementById('learningMatrix').innerHTML = `<img src=${props[i].image} width="70">`
+      let img = document.createElement('img');
+      img.setAttribute('src', `${props[i].image}`);
+      img.setAttribute('width', "70");
+      img.setAttribute('slug', `${props[i].slug}`)
+      img.setAttribute('id', `learn-${props[i].slug}`)
+      document.getElementById('learningMatrix').appendChild(img);
+      img.addEventListener('click', testInfo);
+    }
+  )
+}
+
+function testInfo(e){
+  let fred = e.target.id;
+  let props = getStuff('focusAreasJSON');
+  return Promise.all([e, fred, props])
+    .then(showLearnInfo);
+}
+
+function showLearnInfo([e, fred, props]) {
+  let slug = e.target.getAttribute('slug');
+  document.getElementById('info-content').innerHTML = `
+    <img src="${props[slug].image}" width="100">
+    <i class="material-icons" id="xLearn">highlight_off</i>
+    <h2>${props[slug].label}</h2></br>
+    ${props[slug].info}`;
+  document.getElementById('info-container').setAttribute('style', "display:block");
+  document.getElementById('xLearn').setAttribute('style', "display:inline");
+  document.getElementById('xLearn').addEventListener('click', closeLearn);
+}
+
+function closeLearn() {
+    document.getElementById('info-container').setAttribute('style', "display:none");
+    document.getElementById('info-content').innerHTML = `<i class="material-icons" id="xLearn">highlight_off</i>`;
+}
+
+  
+  
+  
+</script>
+</body>
+</html>
