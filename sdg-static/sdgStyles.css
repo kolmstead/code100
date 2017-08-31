@@ -197,11 +197,15 @@ p {
     -webkit-animation-name: slideIn;
     -webkit-animation-duration: 0.4s;
     animation-name: slideIn;
-    animation-duration: 0.4s
+    animation-duration: 0.4s;
+    display: grid;
+    grid-template-columns: 1fr 20px;
+    grid-template-rows: 1fr 1fr;
 }    
 
 #xLearn {
   display: none;
+  grid-column-start: 2;
 }
 
 @keyframes animatetop {
